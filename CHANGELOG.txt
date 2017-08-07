@@ -1,0 +1,5 @@
+SockTalk ChangeLog
+
+1.0 -> 1.0.1
+Added backwards compatibility for older C++ compilers
+	`nullpointer` defined as `0` or `nullptr` depending on C++ standard
