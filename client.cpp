@@ -28,7 +28,7 @@ Client::Client(int port, const std::string &host, const std::string &username) :
 	}
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sock < 0){
-		std::cerr << "Failed to create socket\nError code: " << errno << std::endl;
+		perror("Failed to create socket");
 		return;
 	}
 
@@ -38,7 +38,7 @@ Client::Client(int port, const std::string &host, const std::string &username) :
 	hostaddr.sin_addr.s_addr = inet_addr(host.c_str());
 
 	if (connect(sock, (sockaddr*)&hostaddr, sizeof(hostaddr)) < 0){
-		std::cerr << "Failed to connect to host\nError code: " << errno << std::endl;
+		perror("Failed to connect to host");
 		return;
 	}
 

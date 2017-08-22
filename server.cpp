@@ -24,7 +24,7 @@
 Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
-		std::cerr << "Failed to create socket\nError code: " << errno << std::endl;
+		perror("Failed to create socket");
 		return;
 	}
 
@@ -34,7 +34,7 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (bind(serverSock, (sockaddr*)&myaddr, sizeof(myaddr)) < 0){
-		std::cerr << "Failed to bind socket\nError code: " << errno << std::endl;
+		perror("Failed to bind socket");
 		return;
 	}
 
@@ -42,7 +42,7 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	setsockopt(serverSock, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt));
 
 	if (listen(serverSock, 5) < 0){
-		std::cerr << "Failed to listen on socket\nError code: " << errno << std::endl;
+		perror("Failed to listen on socket");
 		return;
 	}
 

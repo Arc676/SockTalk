@@ -26,7 +26,7 @@ void run(AcceptThread* accThread){
 		//sockaddr_in client;
 		int clientSock = accept(accThread->serverSock, (sockaddr*)NULL, (socklen_t*)NULL);
 		if (clientSock < 0){
-			std::cerr << "Failed to accept\nError code: " << errno << std::endl;
+			perror("Failed to accept");
 			accThread->running = 0;
 		}else{
 			ClientHandler* ch = new ClientHandler(clientSock, accThread->server);
