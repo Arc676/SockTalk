@@ -13,10 +13,10 @@ all:
 	make client
 
 server: $(SRV)
-	$(CC) -o $(TSRV) $(SRV) $(FLAGS)
+	$(CC) -o $(TSRV) $(SRV) $(FLAGS) $(THREAD)
 
 client: $(CLI)
-	$(CC) -o $(TCLI) $(CLI) $(FLAGS)
+	$(CC) -o $(TCLI) $(CLI) $(FLAGS) $(THREAD)
 
 client.o: client.cpp
 	$(CC) -c client.cpp $(FLAGS) $(THREAD)
