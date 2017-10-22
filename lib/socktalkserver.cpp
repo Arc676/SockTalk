@@ -21,7 +21,7 @@
 #include "acceptthread.h"
 #include "clienthandler.h"
 
-std::string Server::errToString(int err) {
+std::string SockTalkServer::errToString(int err) {
 	switch (err){
 	case SUCCESS:
 		return "Success";
@@ -36,7 +36,7 @@ std::string Server::errToString(int err) {
 	}
 }
 
-Server::Server(int port) : serverPort(port), setupSuccessful(0) {
+SockTalkServer::SockTalkServer(int port) : serverPort(port), setupSuccessful(0) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
 		constructionStatus = CREATE_SOCKET_FAILED;
@@ -65,7 +65,7 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	acceptThread = new AcceptThread(this, serverSock);
 }
 
-void Server::run(){
+void SockTalkServer::run(){
 	if (!setupSuccessful){
 		return;
 	}
@@ -99,11 +99,9 @@ void Server::run(){
 	std::cout << "Server closed" << std::endl;
 }
 
-void Server::handleMessage(const std::string &msg){
-	std::cout << msg << "\n";
-}
+void SockTalkServer::handleMessage(const std::string &msg){}
 
-void Server::broadcast(const std::string &msg, const std::string &source){
+void SockTalkServer::broadcast(const std::string &msg, const std::string &source){
 	for (int i = 0; i < handlers.size(); i++){
 		if (handlers[i]->username != source){
 			handlers[i]->send(msg);
@@ -114,7 +112,7 @@ void Server::broadcast(const std::string &msg, const std::string &source){
 	}
 }
 
-void Server::sendTo(const std::string &msg, const std::string &recipient){
+void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient){
 	for (int i = 0; i < handlers.size(); i++){
 		if (handlers[i]->username == recipient){
 			handlers[i]->send(msg);
@@ -123,7 +121,7 @@ void Server::sendTo(const std::string &msg, const std::string &recipient){
 	}
 }
 
-std::string Server::userList(){
+std::string SockTalkServer::userList(){
 	std::string str = "\tConnected users:";
 	for (int i = 0; i < handlers.size(); i++){
 		str += "\n\t\t" + handlers[i]->username;
@@ -131,12 +129,12 @@ std::string Server::userList(){
 	return str;
 }
 
-void Server::addHandler(ClientHandler* ch){
+void SockTalkServer::addHandler(ClientHandler* ch){
 	handlers.push_back(ch);
 	broadcast(ch->username + " connected", "global");
 }
 
-int Server::usernameTaken(const std::string &username){
+int SockTalkServer::usernameTaken(const std::string &username){
 	checkHandlers();
 	for (int i = 0; i < handlers.size(); i++){
 		if (handlers[i]->username == username){
@@ -146,7 +144,7 @@ int Server::usernameTaken(const std::string &username){
 	return 0;
 }
 
-void Server::checkHandlers(){
+void SockTalkServer::checkHandlers(){
 	for (int i = 0; i < handlers.size();){
 		if (!handlers[i]->isRunning()){
 			delete handlers[i];

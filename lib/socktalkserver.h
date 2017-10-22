@@ -35,7 +35,7 @@
 class ClientHandler;
 class AcceptThread;
 
-class Server {
+class SockTalkServer {
 	int serverSock;
 	int serverPort;
 	int setupSuccessful;
@@ -47,7 +47,7 @@ class Server {
 	void checkHandlers();
 
     public:
-	Server(int);
+	SockTalkServer(int);
 	void run();
 
 

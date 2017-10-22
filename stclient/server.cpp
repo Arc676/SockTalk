@@ -1,4 +1,8 @@
-#include "socktalk.h"
+#include "server.h"
+
+void Server::handleMessage(const std::string &msg){
+	std::cout << msg << '\n';
+}
 
 int main(int argc, char * argv[]){
 	int port;
