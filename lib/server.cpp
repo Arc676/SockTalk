@@ -21,10 +21,25 @@
 #include "acceptthread.h"
 #include "clienthandler.h"
 
+std::string Server::errToString(int err) {
+	switch (err){
+	case SUCCESS:
+		return "Success";
+	case CREATE_SOCKET_FAILED:
+		return "Failed to create socket";
+	case BIND_SOCKET_FAILED:
+		return "Failed to bind socket";
+	case LISTEN_SOCKET_FAILED:
+		return "Failed to listen on socket";
+	default:
+		return "Unknown error";
+	}
+}
+
 Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
-		perror("Failed to create socket");
+		constructionStatus = CREATE_SOCKET_FAILED;
 		return;
 	}
 
@@ -34,7 +49,7 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (bind(serverSock, (sockaddr*)&myaddr, sizeof(myaddr)) < 0){
-		perror("Failed to bind socket");
+		constructionStatus = BIND_SOCKET_FAILED;
 		return;
 	}
 
@@ -42,7 +57,7 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 	setsockopt(serverSock, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt));
 
 	if (listen(serverSock, 5) < 0){
-		perror("Failed to listen on socket");
+		constructionStatus = LISTEN_SOCKET_FAILED;
 		return;
 	}
 
@@ -52,10 +67,8 @@ Server::Server(int port) : serverPort(port), setupSuccessful(0) {
 
 void Server::run(){
 	if (!setupSuccessful){
-		std::cout << "Failed to set up chat service" << std::endl;
 		return;
 	}
-	std::cout << "Hosting chat on port " << serverPort << std::endl;
 	std::string input;
 	while (1){
 		std::getline(std::cin, input);
@@ -86,6 +99,10 @@ void Server::run(){
 	std::cout << "Server closed" << std::endl;
 }
 
+void Server::handleMessage(const std::string &msg){
+	std::cout << msg << "\n";
+}
+
 void Server::broadcast(const std::string &msg, const std::string &source){
 	for (int i = 0; i < handlers.size(); i++){
 		if (handlers[i]->username != source){
@@ -93,7 +110,7 @@ void Server::broadcast(const std::string &msg, const std::string &source){
 		}
 	}
 	if (source != "server"){
-		std::cout << msg << "\n";
+		handleMessage(msg);
 	}
 }
 
@@ -138,19 +155,4 @@ void Server::checkHandlers(){
 			i++;
 		}
 	}
-}
-
-int main(int argc, char * argv[]){
-	int port;
-	if (argc == 2){
-		std::string str(argv[1]);
-		std::stringstream(str) >> port;
-	}else{
-		std::cout << "Enter port number: ";
-		std::string input;
-		getline(std::cin, input);
-		std::stringstream(input) >> port;
-	}
-	Server* server = new Server(port);
-	server->run();
 }

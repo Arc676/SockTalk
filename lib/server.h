@@ -27,6 +27,11 @@
 
 #include <vector>
 
+#define SUCCESS 0
+#define CREATE_SOCKET_FAILED 1
+#define BIND_SOCKET_FAILED 2
+#define LISTEN_SOCKET_FAILED 3
+
 class ClientHandler;
 class AcceptThread;
 
@@ -37,17 +42,23 @@ class Server {
 	AcceptThread* acceptThread;
 	std::vector<ClientHandler*> handlers;
 
+	int status = SUCCESS;
+
 	void checkHandlers();
 
     public:
 	Server(int);
 	void run();
 
-	void addHandler(ClientHandler*);
-	int usernameTaken(const std::string&);
-	
-	void broadcast(const std::string&, const std::string&);
-	void sendTo(const std::string&, const std::string&);
-	
+
+	static std::string errToString(int);
 	std::string userList();
+
+	virtual void addHandler(ClientHandler*);
+	virtual int usernameTaken(const std::string&);
+
+	virtual void broadcast(const std::string&, const std::string&);
+	virtual void sendTo(const std::string&, const std::string&);
+
+	virtual void handleMessage(const std::string&);
 };
