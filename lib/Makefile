@@ -4,9 +4,11 @@ FLAGS=-std=c++11 -c
 clean:
 	rm *.a *.o
 
-lib: exitcodes.o acceptthread.o socktalkclient.o clienthandler.o msgthread_c.o msgthread.o msgthread_s.o socktalkserver.o
+lib: messagehandler.o exitcodes.o acceptthread.o socktalkclient.o clienthandler.o msgthread_c.o msgthread.o msgthread_s.o socktalkserver.o
 	ar rcs socktalk.a *.o
 
+messagehandler.o
+	$(CC) $(FLAGS) messagehandler.cpp
 exitcodes.o:
 	$(CC) $(FLAGS) exitcodes.app
 acceptthread.o:

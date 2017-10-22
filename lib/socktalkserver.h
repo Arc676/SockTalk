@@ -32,7 +32,7 @@
 class ClientHandler;
 class AcceptThread;
 
-class SockTalkServer {
+class SockTalkServer : public MessageHandler {
 	int serverSock;
 	int serverPort;
 	AcceptThread* acceptThread;
@@ -53,6 +53,4 @@ class SockTalkServer {
 
 	virtual void broadcast(const std::string&, const std::string&);
 	virtual void sendTo(const std::string&, const std::string&);
-
-	virtual void handleMessage(const std::string&);
 };

@@ -31,7 +31,7 @@
 
 class MsgThreadC;
 
-class SockTalkClient {
+class SockTalkClient : public MessageHandler {
 	int sock;
 	std::string username;
 	MsgThreadC* msgThread;

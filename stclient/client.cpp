@@ -1,5 +1,9 @@
 #include "client.h"
 
+void Client::handleMessage(const std::string &msg){
+	std::cout << msg << '\n';
+}
+
 void Client::run(){
 	if (status != SUCCESS){
 		std::cout << "Failed to set up chat service" << std::endl;

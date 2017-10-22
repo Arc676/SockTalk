@@ -23,7 +23,6 @@
 
 //Methods to override
 void SockTalkServer::run(){}
-void SockTalkServer::handleMessage(const std::string &msg){}
 
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
