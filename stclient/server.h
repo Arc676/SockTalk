@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "socktalk.h"
+#include "socktalkserver.h"
 
 class Server : public SockTalkServer {
 public:

@@ -4,13 +4,15 @@ FLAGS=-std=c++11 -c
 clean:
 	rm *.a *.o
 
-lib: acceptthread.o client.o clienthandler.o msgthread_c.o msgthread.o msgthread_s.o server.o
+lib: exitcodes.o acceptthread.o socktalkclient.o clienthandler.o msgthread_c.o msgthread.o msgthread_s.o socktalkserver.o
 	ar rcs socktalk.a *.o
 
+exitcodes.o:
+	$(CC) $(FLAGS) exitcodes.app
 acceptthread.o:
 	$(CC) $(FLAGS) acceptthread.cpp
-client.o:
-	$(CC) $(FLAGS) client.cpp
+socktalkclient.o:
+	$(CC) $(FLAGS) socktalkclient.cpp
 clienthandler.o:
 	$(CC) $(FLAGS) clienthandler.cpp
 msgthread_c.o:
@@ -19,5 +21,5 @@ msgthread.o:
 	$(CC) $(FLAGS) msgthread.cpp
 msgthread_s.o:
 	$(CC) $(FLAGS) msgthread_s.cpp
-server.o:
-	$(CC) $(FLAGS) server.cpp
+socktalkserver.o:
+	$(CC) $(FLAGS) socktalkserver.cpp

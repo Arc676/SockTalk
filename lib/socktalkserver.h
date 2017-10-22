@@ -27,10 +27,7 @@
 
 #include <vector>
 
-#define SUCCESS 0
-#define CREATE_SOCKET_FAILED 1
-#define BIND_SOCKET_FAILED 2
-#define LISTEN_SOCKET_FAILED 3
+#include "exitcodes.h"
 
 class ClientHandler;
 class AcceptThread;
@@ -38,7 +35,6 @@ class AcceptThread;
 class SockTalkServer {
 	int serverSock;
 	int serverPort;
-	int setupSuccessful;
 	AcceptThread* acceptThread;
 	std::vector<ClientHandler*> handlers;
 
@@ -48,10 +44,8 @@ class SockTalkServer {
 
     public:
 	SockTalkServer(int);
-	void run();
+	virtual void run();
 
-
-	static std::string errToString(int);
 	std::string userList();
 
 	virtual void addHandler(ClientHandler*);

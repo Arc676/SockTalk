@@ -21,25 +21,14 @@
 #include "acceptthread.h"
 #include "clienthandler.h"
 
-std::string SockTalkServer::errToString(int err) {
-	switch (err){
-	case SUCCESS:
-		return "Success";
-	case CREATE_SOCKET_FAILED:
-		return "Failed to create socket";
-	case BIND_SOCKET_FAILED:
-		return "Failed to bind socket";
-	case LISTEN_SOCKET_FAILED:
-		return "Failed to listen on socket";
-	default:
-		return "Unknown error";
-	}
-}
+//Methods to override
+void SockTalkServer::run(){}
+void SockTalkServer::handleMessage(const std::string &msg){}
 
-SockTalkServer::SockTalkServer(int port) : serverPort(port), setupSuccessful(0) {
+SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
-		constructionStatus = CREATE_SOCKET_FAILED;
+		status = CREATE_SOCKET_FAILED;
 		return;
 	}
 
@@ -49,7 +38,7 @@ SockTalkServer::SockTalkServer(int port) : serverPort(port), setupSuccessful(0) 
 	myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
 	if (bind(serverSock, (sockaddr*)&myaddr, sizeof(myaddr)) < 0){
-		constructionStatus = BIND_SOCKET_FAILED;
+		status = BIND_SOCKET_FAILED;
 		return;
 	}
 
@@ -57,49 +46,12 @@ SockTalkServer::SockTalkServer(int port) : serverPort(port), setupSuccessful(0) 
 	setsockopt(serverSock, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt));
 
 	if (listen(serverSock, 5) < 0){
-		constructionStatus = LISTEN_SOCKET_FAILED;
+		status = LISTEN_SOCKET_FAILED;
 		return;
 	}
 
-	setupSuccessful = 1;
 	acceptThread = new AcceptThread(this, serverSock);
 }
-
-void SockTalkServer::run(){
-	if (!setupSuccessful){
-		return;
-	}
-	std::string input;
-	while (1){
-		std::getline(std::cin, input);
-		if (input == "/close"){
-			std::cout << "Closing server\n";
-			break;
-		}else if (input == "/users"){
-			checkHandlers();
-			std::cout << userList() << "\n";
-		}else if (input == "/help"){
-			std::cout << "Available commands:\n\t/help - show commands\n\t/users - show connected users\n\t/close - close server\n";
-		}else if (input != ""){
-			input = "Server: " + input;
-			std::cout << input << "\n";
-			broadcast(input, "server");
-		}
-		checkHandlers();
-	}
-
-	std::cout << "Closing listener\n";
-	close(serverSock);
-	acceptThread->running = 0;
-	std::cout << "Stopping handlers\n";
-	for (int i = 0; i < handlers.size(); i++){
-		handlers[i]->stop();
-		delete handlers[i];
-	}
-	std::cout << "Server closed" << std::endl;
-}
-
-void SockTalkServer::handleMessage(const std::string &msg){}
 
 void SockTalkServer::broadcast(const std::string &msg, const std::string &source){
 	for (int i = 0; i < handlers.size(); i++){

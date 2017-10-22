@@ -27,15 +27,18 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include "exitcodes.h"
+
 class MsgThreadC;
 
-class Client {
+class SockTalkClient {
 	int sock;
-	int setupSuccessful;
 	std::string username;
 	MsgThreadC* msgThread;
 
+	int status = SUCCESS;
+
     public:
-	Client(int, const std::string&, const std::string&);
-	void run();
+	SockTalkClient(int, const std::string&, const std::string&);
+	virtual void run();
 };
