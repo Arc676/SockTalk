@@ -35,14 +35,12 @@ void run(MsgThread* msgThread){
 		}else{
 			buffer[bytes] = '\0';
 			std::string str(buffer);
-			msgThread->print(str);
+			msgThread->msgHandler->handleMessage(str);
 		}
 		memset(buffer, 0, BUF_SIZE);
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, int socket, Server* server, MsgThread* mthread) :
-	username(username), socket(socket), server(server), running(1),
-	msgThread(run, mthread) {}
-
-void MsgThread::print(const std::string &msg){}
+MsgThread::MsgThread(const std::string &username, int socket, MessageHandler* msgHandler) :
+	username(username), socket(socket), msgHandler(msgHandler), running(1),
+	msgThread(run, this) {}

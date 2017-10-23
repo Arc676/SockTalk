@@ -25,26 +25,25 @@
 #include <string.h>
 #include <pthread.h>
 
+#include "messagehandler.h"
+
 #if __cplusplus >= 201103L
 	#define nullpointer nullptr
 #else
 	#define nullpointer 0
 #endif
 
-class Server;
-
 class MsgThread {
     protected:
-	Server* server;
 	std::thread msgThread;
 
     public:
+	MessageHandler* msgHandler;
 	std::string username;
 	int socket;
 	int running;
 
 	MsgThread(const std::string&, int, Server*, MsgThread*);
-	virtual void print(const std::string&);
 };
 
 void run(MsgThread*);
