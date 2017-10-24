@@ -35,6 +35,7 @@
 #include "msgthread.h"
 
 class SockTalkClient : public MessageHandler {
+    protected:
 	int sock;
 	std::string username;
 	MsgThread* msgThread;

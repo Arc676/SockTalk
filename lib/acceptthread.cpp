@@ -21,12 +21,12 @@
 #include "socktalkserver.h"
 #include "socktalkclienthandler.h"
 
-void run(AcceptThread* accThread){
+void AcceptThread::run(AcceptThread* accThread){
 	while (accThread->running){
 		//sockaddr_in client;
 		int clientSock = accept(accThread->serverSock, (sockaddr*)NULL, (socklen_t*)NULL);
 		if (clientSock < 0){
-			perror("Failed to accept");
+			accThread->server->handleMessage("Failed to accept");
 			accThread->running = 0;
 		}else{
 			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, accThread->server);
@@ -40,4 +40,4 @@ void run(AcceptThread* accThread){
 }
 
 AcceptThread::AcceptThread(SockTalkServer* server, int sock) :
-	serverSock(sock), server(server), running(1), accThread(run, this) {}
+	serverSock(sock), server(server), running(1), accThread(&AcceptThread::run, this) {}

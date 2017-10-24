@@ -32,6 +32,7 @@ class SockTalkServer;
 
 class AcceptThread {
 	std::thread accThread;
+	static void run(AcceptThread*);
 
     public:
 	SockTalkServer* server;

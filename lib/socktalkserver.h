@@ -37,6 +37,7 @@ class SockTalkClientHandler;
 class AcceptThread;
 
 class SockTalkServer : public MessageHandler {
+    protected:
 	int serverSock;
 	int serverPort;
 	AcceptThread* acceptThread;
