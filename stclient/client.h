@@ -19,4 +19,9 @@
 
 #include "socktalkclient.h"
 
-class Client : public SockTalkClient {}
+class Client : public SockTalkClient {
+    public:
+    	using SockTalkClient::SockTalkClient;
+    	virtual void run();
+    	virtual void handleMessage(const std::string&);
+};

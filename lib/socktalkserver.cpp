@@ -21,9 +21,6 @@
 #include "acceptthread.h"
 #include "socktalkclienthandler.h"
 
-//Methods to override
-void SockTalkServer::run(){}
-
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){

@@ -18,6 +18,8 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "server.h"
+#include "socktalkclienthandler.h"
+#include "acceptthread.h"
 
 void Server::handleMessage(const std::string &msg){
 	std::cout << msg << '\n';

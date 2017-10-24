@@ -5,7 +5,7 @@ clean:
 	rm *.a *.o
 
 lib: messagehandler.o exitcodes.o acceptthread.o socktalkclient.o socktalkclienthandler.o msgthread.o socktalkserver.o
-	ar rcs socktalk.a *.o
+	ar rcs libsocktalk.a *.o
 
 messagehandler.o:
 	$(CC) $(FLAGS) messagehandler.cpp

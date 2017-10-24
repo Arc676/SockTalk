@@ -17,11 +17,18 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SERVER_H
+#define SERVER_H
+
 #include <iostream>
 #include <string>
 #include "socktalkserver.h"
 
 class Server : public SockTalkServer {
 public:
+	using SockTalkServer::SockTalkServer;
 	virtual void handleMessage(const std::string&);
-}
+	virtual void run();
+};
+
+#endif

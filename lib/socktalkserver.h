@@ -49,7 +49,7 @@ class SockTalkServer : public MessageHandler {
 
     public:
 	SockTalkServer(int);
-	virtual void run();
+	virtual void run() = 0;
 
 	std::string userList();
 

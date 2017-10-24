@@ -44,7 +44,7 @@ class SockTalkClient : public MessageHandler {
 
     public:
 	SockTalkClient(int, const std::string&, const std::string&);
-	virtual void run();
+	virtual void run() = 0;
 };
 
 #endif
