@@ -17,6 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef MSGTHREAD_H
+#define MSGTHREAD_H
+
 #include <iostream>
 #include <string>
 #include <thread>
@@ -47,3 +50,5 @@ class MsgThread {
 };
 
 void run(MsgThread*);
+
+#endif

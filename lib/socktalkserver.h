@@ -17,6 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SOCKTALKSERVER_H
+#define SOCKTALKSERVER_H
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -54,3 +57,5 @@ class SockTalkServer : public MessageHandler {
 	virtual void broadcast(const std::string&, const std::string&);
 	virtual void sendTo(const std::string&, const std::string&);
 };
+
+#endif

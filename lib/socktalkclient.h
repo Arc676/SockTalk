@@ -17,6 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SOCKTALKCLIENT_H
+#define SOCKTALKCLIENT_H
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -42,3 +45,5 @@ class SockTalkClient : public MessageHandler {
 	SockTalkClient(int, const std::string&, const std::string&);
 	virtual void run();
 };
+
+#endif

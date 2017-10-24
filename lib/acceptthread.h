@@ -17,6 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef ACCEPTTHREAD_H
+#define ACCEPTTHREAD_H
+
 #include <thread>
 #include <iostream>
 
@@ -37,3 +40,5 @@ class AcceptThread {
 
 	AcceptThread(Server*, int);
 };
+
+#endif

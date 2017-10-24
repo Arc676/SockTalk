@@ -17,6 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SOCKTALKCLIENTHANDLER_H
+#define SOCKTALKCLIENTHANDLER_H
+
 #include <unistd.h>
 #include <string>
 
@@ -34,3 +37,5 @@ class SockTalkClientHandler {
 	void stop();
 	int isRunning();
 };
+
+#endif

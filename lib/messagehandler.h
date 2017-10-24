@@ -17,9 +17,14 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef MESSAGEHANDLER_H
+#define MESSAGEHANDLER_H
+
 #include <string>
 
 class MessageHandler {
 public:
 	virtual void handleMessage(const std::string&);
 }
+
+#endif

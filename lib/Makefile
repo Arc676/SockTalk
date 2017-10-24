@@ -7,7 +7,7 @@ clean:
 lib: messagehandler.o exitcodes.o acceptthread.o socktalkclient.o socktalkclienthandler.o msgthread_c.o msgthread.o msgthread_s.o socktalkserver.o
 	ar rcs socktalk.a *.o
 
-messagehandler.o
+messagehandler.o:
 	$(CC) $(FLAGS) messagehandler.cpp
 exitcodes.o:
 	$(CC) $(FLAGS) exitcodes.app
