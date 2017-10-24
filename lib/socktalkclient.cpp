@@ -18,7 +18,6 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "socktalkclient.h"
-#include "msgthread_c.h"
 
 SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username) :
 	username(username) {
@@ -55,5 +54,5 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	msgThread = new MsgThreadC(username, sock);
+	msgThread = new MsgThread(username, sock);
 }

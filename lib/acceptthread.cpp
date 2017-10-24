@@ -18,8 +18,8 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "acceptthread.h"
-#include "server.h"
-#include "clienthandler.h"
+#include "socktalkserver.h"
+#include "socktalkclienthandler.h"
 
 void run(AcceptThread* accThread){
 	while (accThread->running){
@@ -29,7 +29,7 @@ void run(AcceptThread* accThread){
 			perror("Failed to accept");
 			accThread->running = 0;
 		}else{
-			ClientHandler* ch = new ClientHandler(clientSock, accThread->server);
+			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, accThread->server);
 			if (ch->isRunning()){
 				accThread->server->addHandler(ch);
 			}else{
@@ -39,5 +39,5 @@ void run(AcceptThread* accThread){
 	}
 }
 
-AcceptThread::AcceptThread(Server* server, int sock) :
+AcceptThread::AcceptThread(SockTalkServer* server, int sock) :
 	serverSock(sock), server(server), running(1), accThread(run, this) {}

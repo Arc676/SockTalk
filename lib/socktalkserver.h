@@ -30,16 +30,17 @@
 
 #include <vector>
 
+#include "messagehandler.h"
 #include "exitcodes.h"
 
-class ClientHandler;
+class SockTalkClientHandler;
 class AcceptThread;
 
 class SockTalkServer : public MessageHandler {
 	int serverSock;
 	int serverPort;
 	AcceptThread* acceptThread;
-	std::vector<ClientHandler*> handlers;
+	std::vector<SockTalkClientHandler*> handlers;
 
 	int status = SUCCESS;
 
@@ -51,7 +52,7 @@ class SockTalkServer : public MessageHandler {
 
 	std::string userList();
 
-	virtual void addHandler(ClientHandler*);
+	virtual void addHandler(SockTalkClientHandler*);
 	virtual int usernameTaken(const std::string&);
 
 	virtual void broadcast(const std::string&, const std::string&);

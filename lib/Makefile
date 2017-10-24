@@ -10,7 +10,7 @@ lib: messagehandler.o exitcodes.o acceptthread.o socktalkclient.o socktalkclient
 messagehandler.o:
 	$(CC) $(FLAGS) messagehandler.cpp
 exitcodes.o:
-	$(CC) $(FLAGS) exitcodes.app
+	$(CC) $(FLAGS) exitcodes.cpp
 acceptthread.o:
 	$(CC) $(FLAGS) acceptthread.cpp
 socktalkclient.o:

@@ -30,6 +30,6 @@
 class ExitCodes {
 public:
 	static std::string errToString(int);
-}
+};
 
 #endif

@@ -17,6 +17,6 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "messagehandler.cpp"
+#include "messagehandler.h"
 
 void MessageHandler::handleMessage(const std::string &msg){}

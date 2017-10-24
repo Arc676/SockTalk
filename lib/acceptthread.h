@@ -27,18 +27,18 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
-class ClientHandler;
-class Server;
+class SockTalkClientHandler;
+class SockTalkServer;
 
 class AcceptThread {
 	std::thread accThread;
 
     public:
-	Server* server;
+	SockTalkServer* server;
 	int serverSock;
 	int running;
 
-	AcceptThread(Server*, int);
+	AcceptThread(SockTalkServer*, int);
 };
 
 #endif

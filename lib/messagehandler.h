@@ -25,6 +25,6 @@
 class MessageHandler {
 public:
 	virtual void handleMessage(const std::string&);
-}
+};
 
 #endif

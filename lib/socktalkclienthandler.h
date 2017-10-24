@@ -24,7 +24,7 @@
 #include <string>
 
 class MsgThreadS;
-class Server;
+class SockTalkServer;
 
 class SockTalkClientHandler {
 	MsgThreadS* msgThread;
@@ -32,7 +32,7 @@ class SockTalkClientHandler {
 
     public:
 	std::string username;
-	SockTalkClientHandler(int, Server*);
+	SockTalkClientHandler(int, SockTalkServer*);
 	void send(const std::string&);
 	void stop();
 	int isRunning();

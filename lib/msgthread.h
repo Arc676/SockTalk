@@ -46,7 +46,7 @@ class MsgThread {
 	int socket;
 	int running;
 
-	MsgThread(const std::string&, int, Server*, MsgThread*);
+	MsgThread(const std::string&, int, SockTalkServer*, MsgThread*);
 };
 
 void run(MsgThread*);

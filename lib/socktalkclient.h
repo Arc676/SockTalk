@@ -30,14 +30,14 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include "messagehandler.h"
 #include "exitcodes.h"
-
-class MsgThreadC;
+#include "msgthread.h"
 
 class SockTalkClient : public MessageHandler {
 	int sock;
 	std::string username;
-	MsgThreadC* msgThread;
+	MsgThread* msgThread;
 
 	int status = SUCCESS;
 

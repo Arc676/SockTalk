@@ -17,9 +17,9 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "server.h"
+#include "socktalkserver.h"
 #include "acceptthread.h"
-#include "clienthandler.h"
+#include "socktalkclienthandler.h"
 
 //Methods to override
 void SockTalkServer::run(){}
@@ -80,7 +80,7 @@ std::string SockTalkServer::userList(){
 	return str;
 }
 
-void SockTalkServer::addHandler(ClientHandler* ch){
+void SockTalkServer::addHandler(SockTalkClientHandler* ch){
 	handlers.push_back(ch);
 	broadcast(ch->username + " connected", "global");
 }

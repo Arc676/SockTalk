@@ -21,7 +21,7 @@
 #include "msgthread_s.h"
 #include "server.h"
 
-SockTalkClientHandler::SockTalkClientHandler(int socket, Server* server) : sock(socket) {
+SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server) : sock(socket) {
 	char user[256];
 	int bytes = read(sock, user, 255);
 	user[bytes] = '\0';
