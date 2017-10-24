@@ -27,10 +27,10 @@ void run(MsgThread* msgThread){
 	while (msgThread->running){
 		int bytes = read(msgThread->socket, buffer, BUF_SIZE - 1);
 		if (bytes < 0){
-			std::cerr << "Failed to read" << std::endl;
+			msgThread->msgHandler->handleMessage("Failed to read");
 			msgThread->running = 0;
 		}else if (bytes == 0){
-			msgThread->print(msgThread->username + " disconnected");
+			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected");
 			msgThread->running = 0;
 		}else{
 			buffer[bytes] = '\0';

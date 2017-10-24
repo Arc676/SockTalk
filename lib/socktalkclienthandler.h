@@ -23,13 +23,13 @@
 class MsgThreadS;
 class Server;
 
-class ClientHandler {
+class SockTalkClientHandler {
 	MsgThreadS* msgThread;
 	int sock;
 
     public:
 	std::string username;
-	ClientHandler(int, Server*);
+	SockTalkClientHandler(int, Server*);
 	void send(const std::string&);
 	void stop();
 	int isRunning();

@@ -17,11 +17,11 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "clienthandler.h"
+#include "socktalkclienthandler.h"
 #include "msgthread_s.h"
 #include "server.h"
 
-ClientHandler::ClientHandler(int socket, Server* server) : sock(socket) {
+SockTalkClientHandler::SockTalkClientHandler(int socket, Server* server) : sock(socket) {
 	char user[256];
 	int bytes = read(sock, user, 255);
 	user[bytes] = '\0';
@@ -34,17 +34,17 @@ ClientHandler::ClientHandler(int socket, Server* server) : sock(socket) {
 	}
 }
 
-void ClientHandler::send(const std::string &msg){
+void SockTalkClientHandler::send(const std::string &msg){
 	write(sock, msg.c_str(), msg.length());
 }
 
-void ClientHandler::stop(){
+void SockTalkClientHandler::stop(){
 	if (msgThread != nullpointer){
 		msgThread->running = 0;
 	}
 }
 
-int ClientHandler::isRunning(){
+int SockTalkClientHandler::isRunning(){
 	if (msgThread == nullpointer){
 		return 0;
 	}
