@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 2.0
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
