@@ -18,7 +18,6 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "msgthread.h"
-#include "server.h"
 
 #define BUF_SIZE 2048
 

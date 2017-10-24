@@ -54,5 +54,5 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	msgThread = new MsgThread(username, sock);
+	msgThread = new MsgThread(username, sock, this);
 }

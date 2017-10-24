@@ -23,11 +23,12 @@
 #include <unistd.h>
 #include <string>
 
-class MsgThreadS;
+#include "msgthread.h"
+
 class SockTalkServer;
 
 class SockTalkClientHandler {
-	MsgThreadS* msgThread;
+	MsgThread* msgThread;
 	int sock;
 
     public:

@@ -18,8 +18,7 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "socktalkclienthandler.h"
-#include "msgthread_s.h"
-#include "server.h"
+#include "socktalkserver.h"
 
 SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server) : sock(socket) {
 	char user[256];
@@ -30,7 +29,7 @@ SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server)
 		write(sock, "N", 1);
 	}else{
 		write(sock, "K", 1);
-		msgThread = new MsgThreadS(username, sock, server);
+		msgThread = new MsgThread(username, sock, server);
 	}
 }
 
