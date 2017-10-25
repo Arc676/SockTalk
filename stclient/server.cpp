@@ -49,14 +49,8 @@ void Server::run(){
 		checkHandlers();
 	}
 
-	std::cout << "Closing listener\n";
-	close(serverSock);
-	acceptThread->running = 0;
-	std::cout << "Stopping handlers\n";
-	for (int i = 0; i < handlers.size(); i++){
-		handlers[i]->stop();
-		delete handlers[i];
-	}
+	std::cout << "Closing server\n";
+	closeServer();
 	std::cout << "Server closed" << std::endl;
 }
 
