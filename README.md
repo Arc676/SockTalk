@@ -1,8 +1,9 @@
+# SockTalk
+
 SockTalk source code and MakeFile (server and client)
 MakeFile may have to be modified to use installed compiler.
 
-Version 1.0.1
-See CHANGELOG.txt for details regarding version history.
+SockTalk is a C++ static library. In the `stclient` folder is a command line program that uses the SockTalk protocol.
 
 Server listens on socket on desired port and multiple clients can connect.
 "/close" from server side closes server socket.
@@ -23,5 +24,3 @@ Work is based on a project by Matthew Chen and Arc676/Alessandro Vinciguerra.
 Source code for that project is available under MIT license here:
 https://github.com/Arc676/Java-Chat
 Please report if link is broken.
-
-Source code timestamp: August 7, 2017 - 13:53
