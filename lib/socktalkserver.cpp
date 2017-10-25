@@ -18,10 +18,25 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "socktalkserver.h"
-#include "acceptthread.h"
-#include "socktalkclienthandler.h"
+
+void SockTalkServer::InitializeSSL() {
+	SSL_load_error_strings();
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+}
+
+void SockTalkServer::DestroySSL() {
+	ERR_free_strings();
+	EVP_cleanup();
+}
+
+void SockTalkServer::ShutdownSSL(SSL *ssl) {
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+}
 
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
+	InitializeSSL();
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
 		status = CREATE_SOCKET_FAILED;
@@ -47,6 +62,16 @@ SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	}
 
 	acceptThread = new AcceptThread(this, serverSock);
+}
+
+void SockTalkServer::closeServer() {
+	close(serverSock);
+	acceptThread->running = 0;
+	for (int i = 0; i < handlers.size(); i++){
+		handlers[i]->stop();
+		delete handlers[i];
+	}
+	DestroySSL();
 }
 
 void SockTalkServer::broadcast(const std::string &msg, const std::string &source){

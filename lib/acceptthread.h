@@ -27,8 +27,8 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
-class SockTalkClientHandler;
-class SockTalkServer;
+#include "socktalkserver.h"
+#include "socktalkclienthandler.h"
 
 class AcceptThread {
 	std::thread accThread;

@@ -18,8 +18,6 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "acceptthread.h"
-#include "socktalkserver.h"
-#include "socktalkclienthandler.h"
 
 void AcceptThread::run(AcceptThread* accThread){
 	while (accThread->running){

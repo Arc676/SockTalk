@@ -18,7 +18,6 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "socktalkclienthandler.h"
-#include "socktalkserver.h"
 
 SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server) : sock(socket) {
 	char user[256];

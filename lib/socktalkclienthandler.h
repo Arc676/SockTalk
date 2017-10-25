@@ -24,8 +24,7 @@
 #include <string>
 
 #include "msgthread.h"
-
-class SockTalkServer;
+#include "socktalkserver.h"
 
 class SockTalkClientHandler {
 	MsgThread* msgThread;

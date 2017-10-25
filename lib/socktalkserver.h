@@ -30,13 +30,23 @@
 
 #include <vector>
 
+#ifndef OPENSSL
+#define OPENSSL
+
+#include <openssl/bio.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
+#endif
+
 #include "messagehandler.h"
 #include "exitcodes.h"
-
-class SockTalkClientHandler;
-class AcceptThread;
+#include "acceptthread.h"
+#include "socktalkclienthandler.h"
 
 class SockTalkServer : public MessageHandler {
+	void InitializeSSL();
+	void DestroySSL();
     protected:
 	int serverSock;
 	int serverPort;
@@ -46,10 +56,10 @@ class SockTalkServer : public MessageHandler {
 	int status = SUCCESS;
 
 	void checkHandlers();
-
     public:
 	SockTalkServer(int);
 	virtual void run() = 0;
+	virtual void closeServer();
 
 	std::string userList();
 
@@ -58,6 +68,8 @@ class SockTalkServer : public MessageHandler {
 
 	virtual void broadcast(const std::string&, const std::string&);
 	virtual void sendTo(const std::string&, const std::string&);
+
+	void ShutdownSSL(SSL*);
 };
 
 #endif
