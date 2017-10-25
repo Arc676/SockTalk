@@ -2,11 +2,14 @@ SockTalk source code (server and client)
 
 GPL Notice
 
-Copyright (C) 2017 Matthew Chen, Arc676/Alessandro Vinciguerra
+Copyright (C) 2017 Arc676/Alessandro Vinciguerra
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (version 3).
+the Free Software Foundation (version 3) (except the OpenSSL library).
+
+This program is released under the GPL with the additional exemption
+that the compiling, linking, and/or usage of the OpenSSL library is allowed.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,7 +19,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(The full license is available in the gpl.txt file.)
+(The full license is available in gpl.txt.)
+
+OpenSSL License
+
+The OpenSSL toolkit stays under a double license, i.e. both the conditions of
+the OpenSSL License and the original SSLeay license apply to the toolkit.
+
+See opensslLicense.txt for the full text of the OpenSSL license and the
+original SSLeay license.
 
 MIT License
 
@@ -42,5 +53,3 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Please read the licenses carefully before using the licensed material.
-
-Last update: August 7, 2017 - 14:02
