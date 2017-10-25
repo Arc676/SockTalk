@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,34 +17,34 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SOCKTALKCLIENT_H
+#define SOCKTALKCLIENT_H
+
 #include <iostream>
 #include <string>
-#include <thread>
+#include <sstream>
 
 #include <unistd.h>
-#include <string.h>
-#include <pthread.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
-#if __cplusplus >= 201103L
-	#define nullpointer nullptr
-#else
-	#define nullpointer 0
-#endif
+#include "messagehandler.h"
+#include "exitcodes.h"
+#include "msgthread.h"
 
-class Server;
-
-class MsgThread {
+class SockTalkClient : public MessageHandler {
     protected:
-	Server* server;
-	std::thread msgThread;
+	int sock;
+	std::string username;
+	MsgThread* msgThread;
+
+	int status = SUCCESS;
 
     public:
-	std::string username;
-	int socket;
-	int running;
-
-	MsgThread(const std::string&, int, Server*, MsgThread*);
-	virtual void print(const std::string&);
+	SockTalkClient(int, const std::string&, const std::string&);
+	virtual void run() = 0;
 };
 
-void run(MsgThread*);
+#endif

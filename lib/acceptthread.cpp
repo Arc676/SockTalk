@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,18 +18,18 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "acceptthread.h"
-#include "server.h"
-#include "clienthandler.h"
+#include "socktalkserver.h"
+#include "socktalkclienthandler.h"
 
-void run(AcceptThread* accThread){
+void AcceptThread::run(AcceptThread* accThread){
 	while (accThread->running){
 		//sockaddr_in client;
 		int clientSock = accept(accThread->serverSock, (sockaddr*)NULL, (socklen_t*)NULL);
 		if (clientSock < 0){
-			perror("Failed to accept");
+			accThread->server->handleMessage("Failed to accept");
 			accThread->running = 0;
 		}else{
-			ClientHandler* ch = new ClientHandler(clientSock, accThread->server);
+			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, accThread->server);
 			if (ch->isRunning()){
 				accThread->server->addHandler(ch);
 			}else{
@@ -39,5 +39,5 @@ void run(AcceptThread* accThread){
 	}
 }
 
-AcceptThread::AcceptThread(Server* server, int sock) :
-	serverSock(sock), server(server), running(1), accThread(run, this) {}
+AcceptThread::AcceptThread(SockTalkServer* server, int sock) :
+	serverSock(sock), server(server), running(1), accThread(&AcceptThread::run, this) {}

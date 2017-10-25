@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,25 +17,47 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef SOCKTALKSERVER_H
+#define SOCKTALKSERVER_H
+
 #include <iostream>
 #include <string>
 #include <sstream>
 
-#include <unistd.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
-#include <netdb.h>
 
-class MsgThreadC;
+#include <vector>
 
-class Client {
-	int sock;
-	int setupSuccessful;
-	std::string username;
-	MsgThreadC* msgThread;
+#include "messagehandler.h"
+#include "exitcodes.h"
+
+class SockTalkClientHandler;
+class AcceptThread;
+
+class SockTalkServer : public MessageHandler {
+    protected:
+	int serverSock;
+	int serverPort;
+	AcceptThread* acceptThread;
+	std::vector<SockTalkClientHandler*> handlers;
+
+	int status = SUCCESS;
+
+	void checkHandlers();
 
     public:
-	Client(int, const std::string&, const std::string&);
-	void run();
+	SockTalkServer(int);
+	virtual void run() = 0;
+
+	std::string userList();
+
+	virtual void addHandler(SockTalkClientHandler*);
+	virtual int usernameTaken(const std::string&);
+
+	virtual void broadcast(const std::string&, const std::string&);
+	virtual void sendTo(const std::string&, const std::string&);
 };
+
+#endif

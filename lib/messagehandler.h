@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,10 +17,14 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "msgthread_c.h"
+#ifndef MESSAGEHANDLER_H
+#define MESSAGEHANDLER_H
 
-MsgThreadC::MsgThreadC(const std::string &username, int socket) : MsgThread(username, socket, nullpointer, this) {}
+#include <string>
 
-void MsgThreadC::print(const std::string &msg){
-	std::cout << msg << "\n";
-}
+class MessageHandler {
+public:
+	virtual void handleMessage(const std::string&);
+};
+
+#endif

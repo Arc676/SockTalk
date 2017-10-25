@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "clienthandler.h"
-#include "msgthread_s.h"
-#include "server.h"
+#include "socktalkclienthandler.h"
+#include "socktalkserver.h"
 
-ClientHandler::ClientHandler(int socket, Server* server) : sock(socket) {
+SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server) : sock(socket) {
 	char user[256];
 	int bytes = read(sock, user, 255);
 	user[bytes] = '\0';
@@ -30,21 +29,21 @@ ClientHandler::ClientHandler(int socket, Server* server) : sock(socket) {
 		write(sock, "N", 1);
 	}else{
 		write(sock, "K", 1);
-		msgThread = new MsgThreadS(username, sock, server);
+		msgThread = new MsgThread(username, sock, server);
 	}
 }
 
-void ClientHandler::send(const std::string &msg){
+void SockTalkClientHandler::send(const std::string &msg){
 	write(sock, msg.c_str(), msg.length());
 }
 
-void ClientHandler::stop(){
+void SockTalkClientHandler::stop(){
 	if (msgThread != nullpointer){
 		msgThread->running = 0;
 	}
 }
 
-int ClientHandler::isRunning(){
+int SockTalkClientHandler::isRunning(){
 	if (msgThread == nullpointer){
 		return 0;
 	}

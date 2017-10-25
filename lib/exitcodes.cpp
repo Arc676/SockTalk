@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,23 +17,19 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include <thread>
-#include <iostream>
+#include "exitcodes.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <pthread.h>
-
-class ClientHandler;
-class Server;
-
-class AcceptThread {
-	std::thread accThread;
-
-    public:
-	Server* server;
-	int serverSock;
-	int running;
-
-	AcceptThread(Server*, int);
-};
+std::string ExitCodes::errToString(int err) {
+	switch (err){
+	case SUCCESS:
+		return "Success";
+	case CREATE_SOCKET_FAILED:
+		return "Failed to create socket";
+	case BIND_SOCKET_FAILED:
+		return "Failed to bind socket";
+	case LISTEN_SOCKET_FAILED:
+		return "Failed to listen on socket";
+	default:
+		return "Unknown error";
+	}
+}

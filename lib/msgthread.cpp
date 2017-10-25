@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "msgthread.h"
-#include "server.h"
 
 #define BUF_SIZE 2048
 
@@ -27,22 +26,20 @@ void run(MsgThread* msgThread){
 	while (msgThread->running){
 		int bytes = read(msgThread->socket, buffer, BUF_SIZE - 1);
 		if (bytes < 0){
-			std::cerr << "Failed to read" << std::endl;
+			msgThread->msgHandler->handleMessage("Failed to read");
 			msgThread->running = 0;
 		}else if (bytes == 0){
-			msgThread->print(msgThread->username + " disconnected");
+			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected");
 			msgThread->running = 0;
 		}else{
 			buffer[bytes] = '\0';
 			std::string str(buffer);
-			msgThread->print(str);
+			msgThread->msgHandler->handleMessage(str);
 		}
 		memset(buffer, 0, BUF_SIZE);
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, int socket, Server* server, MsgThread* mthread) :
-	username(username), socket(socket), server(server), running(1),
-	msgThread(run, mthread) {}
-
-void MsgThread::print(const std::string &msg){}
+MsgThread::MsgThread(const std::string &username, int socket, MessageHandler* msgHandler) :
+	username(username), socket(socket), msgHandler(msgHandler), running(1),
+	msgThread(run, this) {}

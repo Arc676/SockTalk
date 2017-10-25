@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,10 +17,29 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "msgthread.h"
+#ifndef ACCEPTTHREAD_H
+#define ACCEPTTHREAD_H
 
-class MsgThreadC : public MsgThread {
+#include <thread>
+#include <iostream>
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <pthread.h>
+
+class SockTalkClientHandler;
+class SockTalkServer;
+
+class AcceptThread {
+	std::thread accThread;
+	static void run(AcceptThread*);
+
     public:
-	MsgThreadC(const std::string&, int);
-	void print(const std::string&);
+	SockTalkServer* server;
+	int serverSock;
+	int running;
+
+	AcceptThread(SockTalkServer*, int);
 };
+
+#endif

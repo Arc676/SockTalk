@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,10 +17,19 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "msgthread.h"
+#ifndef EXITCODES_H
+#define EXITCODES_H
 
-class MsgThreadS : public MsgThread {
-    public:
-	MsgThreadS(const std::string&, int, Server*);
-	void print(const std::string&);
+#include <string>
+
+#define SUCCESS 0
+#define CREATE_SOCKET_FAILED 1
+#define BIND_SOCKET_FAILED 2
+#define LISTEN_SOCKET_FAILED 3
+
+class ExitCodes {
+public:
+	static std::string errToString(int);
 };
+
+#endif

@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,50 +18,13 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "client.h"
-#include "msgthread_c.h"
 
-Client::Client(int port, const std::string &host, const std::string &username) :
-	username(username), setupSuccessful(0) {
-	if (username == "server" || username == "global"){
-		std::cout << "Reserved usernames cannot be used" << std::endl;
-		return;
-	}
-	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock < 0){
-		perror("Failed to create socket");
-		return;
-	}
-
-	sockaddr_in hostaddr;
-	hostaddr.sin_family = AF_INET;
-	hostaddr.sin_port = htons(port);
-	hostaddr.sin_addr.s_addr = inet_addr(host.c_str());
-
-	if (connect(sock, (sockaddr*)&hostaddr, sizeof(hostaddr)) < 0){
-		perror("Failed to connect to host");
-		return;
-	}
-
-	std::cout << "Registering with server...\n";
-	write(sock, username.c_str(), username.length());
-	char registration[2];
-	int bytes = read(sock, registration, 1);
-	registration[bytes] = '\0';
-	if (registration[0] == 'K'){
-		std::cout << "Registration successful\n";
-	}else{
-		std::cout << "Username taken\n";
-		close(sock);
-		return;
-	}
-
-	setupSuccessful = 1;
-
-	msgThread = new MsgThreadC(username, sock);
+void Client::handleMessage(const std::string &msg){
+	std::cout << msg << '\n';
 }
 
 void Client::run(){
-	if (!setupSuccessful){
+	if (status != SUCCESS){
 		std::cout << "Failed to set up chat service" << std::endl;
 		return;
 	}

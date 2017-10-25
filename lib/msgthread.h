@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,37 +17,38 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
+#ifndef MSGTHREAD_H
+#define MSGTHREAD_H
+
 #include <iostream>
 #include <string>
-#include <sstream>
+#include <thread>
 
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <unistd.h>
+#include <string.h>
+#include <pthread.h>
 
-#include <vector>
+#include "messagehandler.h"
 
-class ClientHandler;
-class AcceptThread;
+#if __cplusplus >= 201103L
+	#define nullpointer nullptr
+#else
+	#define nullpointer 0
+#endif
 
-class Server {
-	int serverSock;
-	int serverPort;
-	int setupSuccessful;
-	AcceptThread* acceptThread;
-	std::vector<ClientHandler*> handlers;
-
-	void checkHandlers();
+class MsgThread {
+    protected:
+	std::thread msgThread;
 
     public:
-	Server(int);
-	void run();
+	MessageHandler* msgHandler;
+	std::string username;
+	int socket;
+	int running;
 
-	void addHandler(ClientHandler*);
-	int usernameTaken(const std::string&);
-	
-	void broadcast(const std::string&, const std::string&);
-	void sendTo(const std::string&, const std::string&);
-	
-	std::string userList();
+	MsgThread(const std::string&, int, MessageHandler*);
 };
+
+void run(MsgThread*);
+
+#endif

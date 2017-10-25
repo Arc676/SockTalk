@@ -1,6 +1,6 @@
-//SockTalk 1.0.1
+//SockTalk 1.5
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Matthew Chen, Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -17,15 +17,26 @@
 
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
-#include "msgthread_s.h"
-#include "server.h"
+#ifndef SOCKTALKCLIENTHANDLER_H
+#define SOCKTALKCLIENTHANDLER_H
 
-MsgThreadS::MsgThreadS(const std::string &username, int socket, Server* server) : MsgThread(username, socket, server, this) {}
+#include <unistd.h>
+#include <string>
 
-void MsgThreadS::print(const std::string &msg){
-	if (msg.length() > 8 && !msg.compare(msg.length() - 8, 8, ": /users")){ //' /users' is 7 chars long, -8 to get the colon and make sure the msg consists ONLY of '/users'
-		server->sendTo(server->userList(), username);
-	}else{
-		server->broadcast(msg, username);
-	}
-}
+#include "msgthread.h"
+
+class SockTalkServer;
+
+class SockTalkClientHandler {
+	MsgThread* msgThread;
+	int sock;
+
+    public:
+	std::string username;
+	SockTalkClientHandler(int, SockTalkServer*);
+	void send(const std::string&);
+	void stop();
+	int isRunning();
+};
+
+#endif
