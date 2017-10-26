@@ -43,6 +43,7 @@ int MessageHandler::InitializeSSL(const std::string &cert, const std::string &pr
 void MessageHandler::DestroySSL() {
 	ERR_free_strings();
 	EVP_cleanup();
+	SSL_CTX_free(sslctx);
 }
 
 void MessageHandler::ShutdownSSL(SSL *ssl) {
