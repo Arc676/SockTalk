@@ -19,22 +19,6 @@
 
 #include "socktalkserver.h"
 
-void SockTalkServer::InitializeSSL() {
-	SSL_load_error_strings();
-	SSL_library_init();
-	OpenSSL_add_all_algorithms();
-}
-
-void SockTalkServer::DestroySSL() {
-	ERR_free_strings();
-	EVP_cleanup();
-}
-
-void SockTalkServer::ShutdownSSL(SSL *ssl) {
-	SSL_shutdown(ssl);
-	SSL_free(ssl);
-}
-
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	InitializeSSL();
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

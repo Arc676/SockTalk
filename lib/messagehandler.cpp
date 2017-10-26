@@ -20,3 +20,19 @@
 #include "messagehandler.h"
 
 void MessageHandler::handleMessage(const std::string &msg){}
+
+void MessageHandler::InitializeSSL() {
+	SSL_load_error_strings();
+	SSL_library_init();
+	OpenSSL_add_all_algorithms();
+}
+
+void MessageHandler::DestroySSL() {
+	ERR_free_strings();
+	EVP_cleanup();
+}
+
+void MessageHandler::ShutdownSSL(SSL *ssl) {
+	SSL_shutdown(ssl);
+	SSL_free(ssl);
+}

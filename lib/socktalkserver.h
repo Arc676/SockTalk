@@ -45,8 +45,6 @@
 #include "socktalkclienthandler.h"
 
 class SockTalkServer : public MessageHandler {
-	void InitializeSSL();
-	void DestroySSL();
     protected:
 	int serverSock;
 	int serverPort;
@@ -68,8 +66,6 @@ class SockTalkServer : public MessageHandler {
 
 	virtual void broadcast(const std::string&, const std::string&);
 	virtual void sendTo(const std::string&, const std::string&);
-
-	void ShutdownSSL(SSL*);
 };
 
 #endif

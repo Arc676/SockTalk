@@ -22,9 +22,22 @@
 
 #include <string>
 
+#ifndef OPENSSL
+#define OPENSSL
+
+#include <openssl/ssl.h>
+#include <openssl/bio.h>
+#include <openssl/err.h>
+
+#endif
+
 class MessageHandler {
-public:
+    protected:
+	void InitializeSSL();
+	void DestroySSL();
+    public:
 	virtual void handleMessage(const std::string&);
+	void ShutdownSSL(SSL*);
 };
 
 #endif
