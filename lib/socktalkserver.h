@@ -41,8 +41,9 @@
 
 #include "messagehandler.h"
 #include "exitcodes.h"
-#include "acceptthread.h"
-#include "socktalkclienthandler.h"
+
+class AcceptThread;
+class SockTalkClientHandler;
 
 class SockTalkServer : public MessageHandler {
     protected:

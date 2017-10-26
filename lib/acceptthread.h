@@ -36,8 +36,8 @@
 
 #endif
 
-#include "socktalkserver.h"
-#include "socktalkclienthandler.h"
+class SockTalkServer;
+class SockTalkClientHandler;
 
 class AcceptThread {
 	std::thread accThread;

@@ -29,6 +29,18 @@ std::string ExitCodes::errToString(int err) {
 		return "Failed to bind socket";
 	case LISTEN_SOCKET_FAILED:
 		return "Failed to listen on socket";
+	case NO_RESERVED_NAMES:
+		return "Reserved names cannot be used as usernames";
+	case FAILED_TO_CONNECT:
+		return "Failed to connect to host";
+	case FAILED_TO_GET_CERTIFICATE:
+		return "Failed to get SSL certificate";
+	case FAILED_TO_GET_PRIVATE_KEY:
+		return "Failed to get private key from certificate";
+	case SSL_ACCEPT_FAILED:
+		return "Failed to accept socket via SSL";
+	case REGISTRATION_FAILED:
+		return "Registration with server failed; username is probably taken";
 	default:
 		return "Unknown error";
 	}

@@ -18,6 +18,8 @@
 //Based on work by Matthew Chen and Alessandro Vinciguerra (under MIT license)
 
 #include "socktalkserver.h"
+#include "acceptthread.h"
+#include "socktalkclienthandler.h"
 
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 	InitializeSSL();

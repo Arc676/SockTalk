@@ -1,7 +1,7 @@
 CC=g++
 FLAGS=-std=c++11
 LD=-I ../lib -L ../lib
-LIB=-l socktalk
+LIB=-l socktalk -l ssl -l crypto
 
 all:
 	make server

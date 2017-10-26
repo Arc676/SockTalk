@@ -24,7 +24,6 @@
 #include <string>
 
 #include "msgthread.h"
-#include "socktalkserver.h"
 
 #ifndef OPENSSL
 #define OPENSSL
@@ -32,6 +31,8 @@
 #include <openssl/ssl.h>
 
 #endif
+
+class SockTalkServer;
 
 class SockTalkClientHandler {
 	MsgThread* msgThread;
