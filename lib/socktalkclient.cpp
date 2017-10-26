@@ -21,9 +21,12 @@
 
 SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username) :
 	username(username) {
-	InitializeSSL();
 	if (username == "server" || username == "global"){
 		status = NO_RESERVED_NAMES;
+		return;
+	}
+	status = InitializeSSL("cert.pem", "key.pem", 0);
+	if (status != SUCCESS) {
 		return;
 	}
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -42,21 +45,11 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 	
-	SSL_CTX *sslctx = SSL_CTX_new(SSLv23_client_method());
-	SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
-	if (SSL_CTX_use_certificate_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
-		status = FAILED_TO_GET_CERTIFICATE;
-		return;
-	}
-	if (SSL_CTX_use_PrivateKey_file(sslctx, "key.pem", SSL_FILETYPE_PEM) != 1) {
-		status = FAILED_TO_GET_PRIVATE_KEY;
-		return;
-	}
-
 	ssl = SSL_new(sslctx);
 	SSL_set_fd(ssl, sock);
-	if (SSL_accept(ssl) <= 0) {
-		status = SSL_ACCEPT_FAILED;
+	if (SSL_connect(ssl) <= 0) {
+		ERR_print_errors_fp(stderr);
+		status = SSL_CONNECT_FAILED;
 		ShutdownSSL(ssl);
 		return;
 	}

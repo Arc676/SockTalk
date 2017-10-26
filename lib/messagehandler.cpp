@@ -21,10 +21,23 @@
 
 void MessageHandler::handleMessage(const std::string &msg){}
 
-void MessageHandler::InitializeSSL() {
+int MessageHandler::InitializeSSL(const std::string &cert, const std::string &priv, int isServer) {
 	SSL_load_error_strings();
 	SSL_library_init();
 	OpenSSL_add_all_algorithms();
+	if (isServer) {
+		sslctx = SSL_CTX_new(SSLv23_server_method());
+	} else {
+		sslctx = SSL_CTX_new(SSLv23_client_method());
+	}
+	SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+	if (SSL_CTX_use_certificate_file(sslctx, cert.c_str(), SSL_FILETYPE_PEM) != 1) {
+		return FAILED_TO_GET_CERTIFICATE;
+	}
+	if (SSL_CTX_use_PrivateKey_file(sslctx, priv.c_str(), SSL_FILETYPE_PEM) != 1) {
+		return FAILED_TO_GET_PRIVATE_KEY;;
+	}
+	return SUCCESS;
 }
 
 void MessageHandler::DestroySSL() {

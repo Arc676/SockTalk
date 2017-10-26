@@ -31,9 +31,12 @@
 
 #endif
 
+#include "exitcodes.h"
+
 class MessageHandler {
     protected:
-	void InitializeSSL();
+	SSL_CTX* sslctx;
+	int InitializeSSL(const std::string&, const std::string&, int);
 	void DestroySSL();
     public:
 	virtual void handleMessage(const std::string&);

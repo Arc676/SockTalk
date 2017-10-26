@@ -47,8 +47,9 @@ class AcceptThread {
 	SockTalkServer* server;
 	int serverSock;
 	int running;
+	SSL_CTX* sslctx;
 
-	AcceptThread(SockTalkServer*, int);
+	AcceptThread(SockTalkServer*, int, SSL_CTX*);
 };
 
 #endif

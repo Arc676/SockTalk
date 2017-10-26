@@ -39,6 +39,8 @@ std::string ExitCodes::errToString(int err) {
 		return "Failed to get private key from certificate";
 	case SSL_ACCEPT_FAILED:
 		return "Failed to accept socket via SSL";
+	case SSL_CONNECT_FAILED:
+		return "Failed to connect socket via SSL";
 	case REGISTRATION_FAILED:
 		return "Registration with server failed; username is probably taken";
 	default:

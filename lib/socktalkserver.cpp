@@ -22,7 +22,10 @@
 #include "socktalkclienthandler.h"
 
 SockTalkServer::SockTalkServer(int port) : serverPort(port) {
-	InitializeSSL();
+	status = InitializeSSL("cert.pem", "key.pem", 1);
+	if (status != SUCCESS) {
+		return;
+	}
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (serverSock < 0){
 		status = CREATE_SOCKET_FAILED;
@@ -47,7 +50,7 @@ SockTalkServer::SockTalkServer(int port) : serverPort(port) {
 		return;
 	}
 
-	acceptThread = new AcceptThread(this, serverSock);
+	acceptThread = new AcceptThread(this, serverSock, sslctx);
 }
 
 void SockTalkServer::closeServer() {
