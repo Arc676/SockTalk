@@ -36,6 +36,13 @@
 	#define nullpointer 0
 #endif
 
+#ifndef OPENSSL
+#define OPENSSL
+
+#include <openssl/ssl.h>
+
+#endif
+
 class MsgThread {
     protected:
 	std::thread msgThread;
@@ -43,10 +50,10 @@ class MsgThread {
     public:
 	MessageHandler* msgHandler;
 	std::string username;
-	int socket;
+	SSL* socket;
 	int running;
 
-	MsgThread(const std::string&, int, MessageHandler*);
+	MsgThread(const std::string&, SSL*, MessageHandler*);
 };
 
 void run(MsgThread*);

@@ -27,7 +27,27 @@ void AcceptThread::run(AcceptThread* accThread){
 			accThread->server->handleMessage("Failed to accept");
 			accThread->running = 0;
 		}else{
-			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, accThread->server);
+			SSL_CTX *sslctx = SSL_CTX_new(SSLv23_server_method());
+			SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+			if (SSL_CTX_use_certificate_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+				accThread->server->handleMessage("Failed to get certificate");
+				accThread->running = 0;
+				return;
+			}
+			if (SSL_CTX_use_PrivateKey_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+				accThread->server->handleMessage("Failed to get private key");
+				accThread->running = 0;
+				return;
+			}
+			SSL *cSSL = SSL_new(sslctx);
+			SSL_set_fd(cSSL, clientSock);
+			if (SSL_accept(cSSL) <= 0) {
+				accThread->server->handleMessage("Failed to accept with SSL");
+				accThread->running = 0;
+				accThread->server->ShutdownSSL(cSSL);
+				return;
+			}
+			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server);
 			if (ch->isRunning()){
 				accThread->server->addHandler(ch);
 			}else{

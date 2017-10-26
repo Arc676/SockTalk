@@ -26,13 +26,21 @@
 #include "msgthread.h"
 #include "socktalkserver.h"
 
+#ifndef OPENSSL
+#define OPENSSL
+
+#include <openssl/ssl.h>
+
+#endif
+
 class SockTalkClientHandler {
 	MsgThread* msgThread;
+	SSL* ssl;
 	int sock;
 
     public:
 	std::string username;
-	SockTalkClientHandler(int, SockTalkServer*);
+	SockTalkClientHandler(int, SSL*, SockTalkServer*);
 	void send(const std::string&);
 	void stop();
 	int isRunning();

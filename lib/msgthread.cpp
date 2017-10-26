@@ -24,12 +24,12 @@
 void run(MsgThread* msgThread){
 	char buffer[BUF_SIZE];
 	while (msgThread->running){
-		int bytes = read(msgThread->socket, buffer, BUF_SIZE - 1);
+		int bytes = SSL_read(msgThread->socket, buffer, BUF_SIZE - 1);
 		if (bytes < 0){
 			msgThread->msgHandler->handleMessage("Failed to read");
 			msgThread->running = 0;
 		}else if (bytes == 0){
-			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected");
+			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected or lost connection");
 			msgThread->running = 0;
 		}else{
 			buffer[bytes] = '\0';
@@ -40,6 +40,6 @@ void run(MsgThread* msgThread){
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, int socket, MessageHandler* msgHandler) :
+MsgThread::MsgThread(const std::string &username, SSL* socket, MessageHandler* msgHandler) :
 	username(username), socket(socket), msgHandler(msgHandler), running(1),
 	msgThread(run, this) {}

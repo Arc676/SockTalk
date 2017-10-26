@@ -21,8 +21,9 @@
 
 SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username) :
 	username(username) {
+	InitializeSSL();
 	if (username == "server" || username == "global"){
-		std::cout << "Reserved usernames cannot be used" << std::endl;
+		status = NO_RESERVED_NAMES;
 		return;
 	}
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -37,22 +38,42 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 	hostaddr.sin_addr.s_addr = inet_addr(host.c_str());
 
 	if (connect(sock, (sockaddr*)&hostaddr, sizeof(hostaddr)) < 0){
-		perror("Failed to connect to host");
+		status = FAILED_TO_CONNECT;
+		return;
+	}
+	
+	SSL_CTX *sslctx = SSL_CTX_new(SSLv23_client_method());
+	SSL_CTX_set_options(sslctx, SSL_OP_SINGLE_DH_USE);
+	if (SSL_CTX_use_certificate_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+		status = FAILED_TO_GET_CERTIFICATE;
+		return;
+	}
+	if (SSL_CTX_use_PrivateKey_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+		status = FAILED_TO_GET_PRIVATE_KEY;
 		return;
 	}
 
-	std::cout << "Registering with server...\n";
-	write(sock, username.c_str(), username.length());
+	ssl = SSL_new(sslctx);
+	SSL_set_fd(ssl, sock);
+	if (SSL_accept(ssl) <= 0) {
+		status = SSL_ACCEPT_FAILED;
+		ShutdownSSL(ssl);
+		return;
+	}
+	SSL_write(ssl, username.c_str(), username.length());
 	char registration[2];
-	int bytes = read(sock, registration, 1);
+	int bytes = SSL_read(ssl, registration, 1);
 	registration[bytes] = '\0';
-	if (registration[0] == 'K'){
-		std::cout << "Registration successful\n";
-	}else{
-		std::cout << "Username taken\n";
+	if (registration[0] == 'N'){
+		status = REGISTRATION_FAILED;
 		close(sock);
 		return;
 	}
 
-	msgThread = new MsgThread(username, sock, this);
+	msgThread = new MsgThread(username, ssl, this);
+}
+
+void SockTalkClient::closeClient() {
+	close(sock);
+	ShutdownSSL(ssl);
 }

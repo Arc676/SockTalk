@@ -43,10 +43,10 @@ void Client::run(){
 		if (input.at(0) != '/'){
 			std::cout << input << std::endl;
 		}
-		write(sock, input.c_str(), input.length());
+		SSL_write(ssl, input.c_str(), input.length());
 	}
 	std::cout << "Closing socket\n";
-	close(sock);
+	SockTalkClient::closeClient();
 	std::cout << "Chat terminated" << std::endl;
 }
 

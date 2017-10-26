@@ -27,6 +27,15 @@
 #include <netinet/in.h>
 #include <pthread.h>
 
+#ifndef OPENSSL
+#define OPENSSL
+
+#include <openssl/bio.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
+
+#endif
+
 #include "socktalkserver.h"
 #include "socktalkclienthandler.h"
 

@@ -19,27 +19,28 @@
 
 #include "socktalkclienthandler.h"
 
-SockTalkClientHandler::SockTalkClientHandler(int socket, SockTalkServer* server) : sock(socket) {
+SockTalkClientHandler::SockTalkClientHandler(int socket, SSL* ssl, SockTalkServer* server) : sock(socket), ssl(ssl) {
 	char user[256];
-	int bytes = read(sock, user, 255);
+	int bytes = SSL_read(ssl, user, 255);
 	user[bytes] = '\0';
 	username = std::string(user);
 	if (server->usernameTaken(username)){
-		write(sock, "N", 1);
+		SSL_write(ssl, "N", 1);
 	}else{
-		write(sock, "K", 1);
-		msgThread = new MsgThread(username, sock, server);
+		SSL_write(ssl, "K", 1);
+		msgThread = new MsgThread(username, ssl, server);
 	}
 }
 
 void SockTalkClientHandler::send(const std::string &msg){
-	write(sock, msg.c_str(), msg.length());
+	SSL_write(ssl, msg.c_str(), msg.length());
 }
 
 void SockTalkClientHandler::stop(){
 	if (msgThread != nullpointer){
 		msgThread->running = 0;
 	}
+	close(sock);
 }
 
 int SockTalkClientHandler::isRunning(){

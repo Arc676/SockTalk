@@ -37,11 +37,13 @@
 class SockTalkClient : public MessageHandler {
     protected:
 	int sock;
+	SSL* ssl;
 	std::string username;
 	MsgThread* msgThread;
 
 	int status = SUCCESS;
 
+	void closeClient();
     public:
 	SockTalkClient(int, const std::string&, const std::string&);
 	virtual void run() = 0;
