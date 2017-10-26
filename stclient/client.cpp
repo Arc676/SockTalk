@@ -25,7 +25,7 @@ void Client::handleMessage(const std::string &msg){
 
 void Client::run(){
 	if (status != SUCCESS){
-		std::cout << "Failed to set up chat service" << std::endl;
+		std::cout << "Failed to set up chat service: " << ExitCodes::errToString(status) << std::endl;
 		return;
 	}
 	std::cout << "Connected\n";

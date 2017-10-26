@@ -36,7 +36,7 @@ void AcceptThread::run(AcceptThread* accThread){
 				accThread->running = 0;
 				return;
 			}
-			if (SSL_CTX_use_PrivateKey_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+			if (SSL_CTX_use_PrivateKey_file(sslctx, "key.pem", SSL_FILETYPE_PEM) != 1) {
 				accThread->server->handleMessage("Failed to get private key");
 				accThread->running = 0;
 				return;

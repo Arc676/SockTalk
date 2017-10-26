@@ -48,7 +48,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		status = FAILED_TO_GET_CERTIFICATE;
 		return;
 	}
-	if (SSL_CTX_use_PrivateKey_file(sslctx, "cert.pem", SSL_FILETYPE_PEM) != 1) {
+	if (SSL_CTX_use_PrivateKey_file(sslctx, "key.pem", SSL_FILETYPE_PEM) != 1) {
 		status = FAILED_TO_GET_PRIVATE_KEY;
 		return;
 	}
