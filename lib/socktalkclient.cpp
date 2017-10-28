@@ -44,7 +44,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		status = FAILED_TO_CONNECT;
 		return;
 	}
-	
+
 	ssl = SSL_new(sslctx);
 	SSL_set_fd(ssl, sock);
 	if (SSL_connect(ssl) <= 0) {
@@ -70,4 +70,12 @@ void SockTalkClient::closeClient() {
 	close(sock);
 	ShutdownSSL(ssl);
 	DestroySSL();
+}
+
+int SockTalkClient::send(const std::string &message) {
+	return SSL_write(ssl, message.c_str(), message.length());
+}
+
+int SockTalkClient::getStatus() {
+	return status;
 }

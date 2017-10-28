@@ -57,7 +57,6 @@ class SockTalkServer : public MessageHandler {
 	void checkHandlers();
     public:
 	SockTalkServer(int);
-	virtual void run() = 0;
 	virtual void closeServer();
 
 	std::string userList();
