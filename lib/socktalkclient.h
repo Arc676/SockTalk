@@ -44,8 +44,8 @@ class SockTalkClient : public MessageHandler {
 	int status = SUCCESS;
 
 	int send(const std::string&);
-	void closeClient();
     public:
+	void closeClient();
 	SockTalkClient(int, const std::string&, const std::string&);
 	int getStatus();
 };
