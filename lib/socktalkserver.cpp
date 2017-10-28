@@ -70,7 +70,7 @@ void SockTalkServer::broadcast(const std::string &msg, const std::string &source
 		}
 	}
 	if (source != "server"){
-		handleMessage(msg);
+		handleMessage(msg, MESSAGE);
 	}
 }
 

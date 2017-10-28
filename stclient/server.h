@@ -27,7 +27,7 @@
 class Server : public SockTalkServer {
 public:
 	using SockTalkServer::SockTalkServer;
-	virtual void handleMessage(const std::string&);
+	virtual void handleMessage(const std::string&, int);
 	virtual void run();
 };
 

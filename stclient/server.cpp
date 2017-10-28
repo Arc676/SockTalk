@@ -21,7 +21,7 @@
 #include "socktalkclienthandler.h"
 #include "acceptthread.h"
 
-void Server::handleMessage(const std::string &msg){
+void Server::handleMessage(const std::string &msg, int type){
 	std::cout << msg << '\n';
 }
 

@@ -19,7 +19,7 @@
 
 #include "client.h"
 
-void Client::handleMessage(const std::string &msg){
+void Client::handleMessage(const std::string &msg, int){
 	std::cout << msg << '\n';
 }
 
@@ -34,7 +34,6 @@ void Client::run(){
 		std::getline(std::cin, input);
 		if (input == "/disconnect"){
 			std::cout << "Disconnecting...\n";
-			msgThread->running = 0;
 			break;
 		}else if (input == ""){
 			continue;

@@ -31,6 +31,10 @@
 
 #endif
 
+#define INFO 0
+#define MESSAGE 1
+#define ERROR 2
+
 #include "exitcodes.h"
 
 class MessageHandler {
@@ -39,7 +43,7 @@ class MessageHandler {
 	int InitializeSSL(const std::string&, const std::string&, int);
 	void DestroySSL();
     public:
-	virtual void handleMessage(const std::string&);
+	virtual void handleMessage(const std::string&, int) = 0;
 	void ShutdownSSL(SSL*);
 };
 

@@ -21,29 +21,26 @@
 #include "socktalkserver.h"
 #include "socktalkclienthandler.h"
 
-void AcceptThread::run(AcceptThread* accThread){
-	while (accThread->running){
-		//sockaddr_in client;
+void AcceptThread::run(AcceptThread* accThread) {
+	while (accThread->running) {
 		int clientSock = accept(accThread->serverSock, (sockaddr*)NULL, (socklen_t*)NULL);
-		if (clientSock < 0){
-			accThread->server->handleMessage("Failed to accept");
+		if (clientSock < 0) {
+			accThread->server->handleMessage("Failed to accept", ERROR);
 			accThread->running = 0;
-		}else{
+		} else {
 			SSL *cSSL = SSL_new(accThread->sslctx);
 			SSL_set_fd(cSSL, clientSock);
 			int err = SSL_accept(cSSL);
 			if (err <= 0) {
-				accThread->server->handleMessage("Failed to accept with SSL");
-				std::cout << "Error: " << err << "\n";
-				ERR_print_errors_fp(stderr);
+				accThread->server->handleMessage("Failed to accept with SSL", ERROR);
 				accThread->running = 0;
 				accThread->server->ShutdownSSL(cSSL);
 				return;
 			}
 			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server);
-			if (ch->isRunning()){
+			if (ch->isRunning()) {
 				accThread->server->addHandler(ch);
-			}else{
+			} else {
 				delete ch;
 			}
 		}

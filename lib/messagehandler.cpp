@@ -19,8 +19,6 @@
 
 #include "messagehandler.h"
 
-void MessageHandler::handleMessage(const std::string &msg){}
-
 int MessageHandler::InitializeSSL(const std::string &cert, const std::string &priv, int isServer) {
 	SSL_load_error_strings();
 	SSL_library_init();

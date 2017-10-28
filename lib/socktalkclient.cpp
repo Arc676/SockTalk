@@ -67,6 +67,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 }
 
 void SockTalkClient::closeClient() {
+	msgThread->running = 0;
 	close(sock);
 	ShutdownSSL(ssl);
 	DestroySSL();

@@ -23,5 +23,5 @@ class Client : public SockTalkClient {
     public:
     	using SockTalkClient::SockTalkClient;
      	void run();
-    	virtual void handleMessage(const std::string&);
+    	virtual void handleMessage(const std::string&, int);
 };

@@ -21,20 +21,20 @@
 
 #define BUF_SIZE 2048
 
-void run(MsgThread* msgThread){
+void run(MsgThread* msgThread) {
 	char buffer[BUF_SIZE];
-	while (msgThread->running){
+	while (msgThread->running) {
 		int bytes = SSL_read(msgThread->socket, buffer, BUF_SIZE - 1);
-		if (bytes < 0){
-			msgThread->msgHandler->handleMessage("Failed to read");
+		if (bytes < 0) {
+			msgThread->msgHandler->handleMessage("Failed to read", ERROR);
 			msgThread->running = 0;
-		}else if (bytes == 0){
-			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected or lost connection");
+		} else if (bytes == 0) {
+			msgThread->msgHandler->handleMessage(msgThread->username + " disconnected", INFO);
 			msgThread->running = 0;
-		}else{
+		} else {
 			buffer[bytes] = '\0';
 			std::string str(buffer);
-			msgThread->msgHandler->handleMessage(str);
+			msgThread->msgHandler->handleMessage(str, MESSAGE);
 		}
 		memset(buffer, 0, BUF_SIZE);
 	}
