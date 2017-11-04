@@ -181,7 +181,11 @@ void SockTalkServer::broadcast(const std::string &msg, const std::string &source
 		}
 	}
 	if (source != "server"){
-		handleMessage(msg, MESSAGE);
+		if (source == "global") {
+			handleMessage(msg, INFO);
+		} else {
+			handleMessage(msg, MESSAGE);
+		}
 	}
 }
 
