@@ -1,0 +1,7 @@
+*.o
+noticeheader.txt
+server
+client
+.*
+*.a
+*.pem
