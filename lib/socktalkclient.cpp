@@ -153,7 +153,12 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		status = NO_RESERVED_NAMES;
 		return;
 	}
-	status = InitializeSSL(cert, key, 0);
+	status = SUCCESS;
+	if (cert == "" || key == "") {
+		useSSL = false;
+	} else {
+		status = InitializeSSL(cert, key, 0);
+	}
 	if (status != SUCCESS) {
 		return;
 	}
@@ -173,17 +178,23 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	ssl = SSL_new(sslctx);
-	SSL_set_fd(ssl, sock);
-	if (SSL_connect(ssl) <= 0) {
-		ERR_print_errors_fp(stderr);
-		status = SSL_CONNECT_FAILED;
-		ShutdownSSL(ssl);
-		return;
-	}
-	SSL_write(ssl, username.c_str(), username.length());
 	char registration[2];
-	int bytes = SSL_read(ssl, registration, 1);
+	int bytes = 0;
+	if (useSSL) {
+		ssl = SSL_new(sslctx);
+		SSL_set_fd(ssl, sock);
+		if (SSL_connect(ssl) <= 0) {
+			ERR_print_errors_fp(stderr);
+			status = SSL_CONNECT_FAILED;
+			ShutdownSSL(ssl);
+			return;
+		}
+		SSL_write(ssl, username.c_str(), username.length());
+		bytes = SSL_read(ssl, registration, 1);
+	} else {
+		write(socket, username.c_str(), username.length());
+		bytes = read(socket, registration, 1);
+	}
 	registration[bytes] = '\0';
 	if (registration[0] == 'N'){
 		status = REGISTRATION_FAILED;
@@ -191,18 +202,24 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	msgThread = new MsgThread(username, ssl, this);
+	msgThread = new MsgThread(username, socket, ssl, this);
 }
 
 void SockTalkClient::closeClient() {
 	msgThread->running = 0;
 	close(sock);
-	ShutdownSSL(ssl);
-	DestroySSL();
+	if (useSSL) {
+		ShutdownSSL(ssl);
+		DestroySSL();
+	}
 }
 
 int SockTalkClient::send(const std::string &message) {
-	return SSL_write(ssl, message.c_str(), message.length());
+	if (useSSL) {
+		return SSL_write(ssl, message.c_str(), message.length());
+	} else {
+		return write(socket, message.c_str(), message.length());
+	}
 }
 
 int SockTalkClient::getStatus() {

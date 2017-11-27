@@ -156,14 +156,17 @@ void AcceptThread::run(AcceptThread* accThread) {
 			accThread->server->handleMessage("Failed to accept", ERROR);
 			accThread->running = 0;
 		} else {
-			SSL *cSSL = SSL_new(accThread->sslctx);
-			SSL_set_fd(cSSL, clientSock);
-			int err = SSL_accept(cSSL);
-			if (err <= 0) {
-				accThread->server->handleMessage("Failed to accept with SSL", ERROR);
-				accThread->running = 0;
-				accThread->server->ShutdownSSL(cSSL);
-				return;
+			SSL *cSSL = nullpointer;
+			if (accThread->sslctx != nullpointer) {
+				cSSL = SSL_new(accThread->sslctx);
+				SSL_set_fd(cSSL, clientSock);
+				int err = SSL_accept(cSSL);
+				if (err <= 0) {
+					accThread->server->handleMessage("Failed to accept with SSL", ERROR);
+					accThread->running = 0;
+					accThread->server->ShutdownSSL(cSSL);
+					return;
+				}
 			}
 			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server);
 			if (ch->isRunning()) {

@@ -167,7 +167,8 @@
 
 class MessageHandler {
     protected:
-	SSL_CTX* sslctx;
+    	bool useSSL = true;
+	SSL_CTX* sslctx = nullpointer;
 	int InitializeSSL(const std::string&, const std::string&, int);
 	void DestroySSL();
     public:

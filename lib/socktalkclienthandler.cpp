@@ -150,19 +150,28 @@
 
 SockTalkClientHandler::SockTalkClientHandler(int socket, SSL* ssl, SockTalkServer* server) : sock(socket), ssl(ssl) {
 	char user[256];
-	int bytes = SSL_read(ssl, user, 255);
+	int bytes = 0;
+	if (ssl == nullpointer) {
+		bytes = read(socket, user, 255);
+	} else {
+		bytes = SSL_read(ssl, user, 255);
+	}
 	user[bytes] = '\0';
 	username = std::string(user);
 	if (server->usernameTaken(username)){
-		SSL_write(ssl, "N", 1);
+		send("N");
 	}else{
-		SSL_write(ssl, "K", 1);
-		msgThread = new MsgThread(username, ssl, server);
+		send("K");
+		msgThread = new MsgThread(username, socket, ssl, server);
 	}
 }
 
 void SockTalkClientHandler::send(const std::string &msg){
-	SSL_write(ssl, msg.c_str(), msg.length());
+	if (ssl == nullpointer) {
+		write(socket, msg.c_str(), msg.length());
+	} else {
+		SSL_write(ssl, msg.c_str(), msg.length());
+	}
 }
 
 void SockTalkClientHandler::stop(){

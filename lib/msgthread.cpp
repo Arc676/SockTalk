@@ -152,7 +152,12 @@
 void run(MsgThread* msgThread) {
 	char buffer[BUF_SIZE];
 	while (msgThread->running) {
-		int bytes = SSL_read(msgThread->socket, buffer, BUF_SIZE - 1);
+		int bytes = 0;
+		if (ssl == nullpointer) {
+			bytes = SSL_read(msgThread->ssl, buffer, BUF_SIZE - 1);
+		} else {
+			bytes = read(msgThread->socket, buffer, BUF_SIZE - 1);
+		}
 		if (bytes < 0) {
 			msgThread->msgHandler->handleMessage("Failed to read", ERROR);
 			msgThread->running = 0;
@@ -168,6 +173,6 @@ void run(MsgThread* msgThread) {
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, SSL* socket, MessageHandler* msgHandler) :
-	username(username), socket(socket), msgHandler(msgHandler), running(1),
+MsgThread::MsgThread(const std::string &username, int socket, SSL* ssl, MessageHandler* msgHandler) :
+	username(username), socket(socket), ssl(ssl), msgHandler(msgHandler), running(1),
 	msgThread(run, this) {}

@@ -178,10 +178,11 @@ class MsgThread {
     public:
 	MessageHandler* msgHandler;
 	std::string username;
-	SSL* socket;
+	int socket;
+	SSL* ssl;
 	int running;
 
-	MsgThread(const std::string&, SSL*, MessageHandler*);
+	MsgThread(const std::string&, int, SSL*, MessageHandler*);
 };
 
 void run(MsgThread*);

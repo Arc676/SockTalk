@@ -150,7 +150,12 @@
 #include "socktalkclienthandler.h"
 
 SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::string &key) : serverPort(port) {
-	status = InitializeSSL(cert, key, 1);
+	if (cert == "" || key == "") {
+		useSSL = false;
+		status = SUCCESS;
+	} else {
+		status = InitializeSSL(cert, key, 1);
+	}
 	if (status != SUCCESS) {
 		return;
 	}
@@ -188,7 +193,9 @@ void SockTalkServer::closeServer() {
 		handlers[i]->stop();
 		delete handlers[i];
 	}
-	DestroySSL();
+	if (useSSL) {
+		DestroySSL();
+	}
 }
 
 void SockTalkServer::broadcast(const std::string &msg, const std::string &source){
