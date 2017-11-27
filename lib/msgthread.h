@@ -156,7 +156,7 @@
 #include <string.h>
 #include <pthread.h>
 
-#include "messagehandler.h"
+class MessageHandler;
 
 #if __cplusplus >= 201103L
 	#define nullpointer nullptr
@@ -178,7 +178,7 @@ class MsgThread {
     public:
 	MessageHandler* msgHandler;
 	std::string username;
-	int socket;
+	int sock;
 	SSL* ssl;
 	int running;
 

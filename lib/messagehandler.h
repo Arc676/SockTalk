@@ -164,6 +164,7 @@
 #define ERROR 2
 
 #include "exitcodes.h"
+#include "msgthread.h"
 
 class MessageHandler {
     protected:

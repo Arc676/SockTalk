@@ -192,8 +192,8 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		SSL_write(ssl, username.c_str(), username.length());
 		bytes = SSL_read(ssl, registration, 1);
 	} else {
-		write(socket, username.c_str(), username.length());
-		bytes = read(socket, registration, 1);
+		write(sock, username.c_str(), username.length());
+		bytes = read(sock, registration, 1);
 	}
 	registration[bytes] = '\0';
 	if (registration[0] == 'N'){
@@ -202,7 +202,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	msgThread = new MsgThread(username, socket, ssl, this);
+	msgThread = new MsgThread(username, sock, ssl, this);
 }
 
 void SockTalkClient::closeClient() {
@@ -218,7 +218,7 @@ int SockTalkClient::send(const std::string &message) {
 	if (useSSL) {
 		return SSL_write(ssl, message.c_str(), message.length());
 	} else {
-		return write(socket, message.c_str(), message.length());
+		return write(sock, message.c_str(), message.length());
 	}
 }
 

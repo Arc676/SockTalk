@@ -148,11 +148,11 @@
 #include "socktalkclienthandler.h"
 #include "socktalkserver.h"
 
-SockTalkClientHandler::SockTalkClientHandler(int socket, SSL* ssl, SockTalkServer* server) : sock(socket), ssl(ssl) {
+SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server) : sock(sock), ssl(ssl) {
 	char user[256];
 	int bytes = 0;
 	if (ssl == nullpointer) {
-		bytes = read(socket, user, 255);
+		bytes = read(sock, user, 255);
 	} else {
 		bytes = SSL_read(ssl, user, 255);
 	}
@@ -162,13 +162,13 @@ SockTalkClientHandler::SockTalkClientHandler(int socket, SSL* ssl, SockTalkServe
 		send("N");
 	}else{
 		send("K");
-		msgThread = new MsgThread(username, socket, ssl, server);
+		msgThread = new MsgThread(username, sock, ssl, server);
 	}
 }
 
 void SockTalkClientHandler::send(const std::string &msg){
 	if (ssl == nullpointer) {
-		write(socket, msg.c_str(), msg.length());
+		write(sock, msg.c_str(), msg.length());
 	} else {
 		SSL_write(ssl, msg.c_str(), msg.length());
 	}

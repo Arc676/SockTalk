@@ -146,6 +146,7 @@
  */
 
 #include "msgthread.h"
+#include "messagehandler.h"
 
 #define BUF_SIZE 2048
 
@@ -153,10 +154,10 @@ void run(MsgThread* msgThread) {
 	char buffer[BUF_SIZE];
 	while (msgThread->running) {
 		int bytes = 0;
-		if (ssl == nullpointer) {
+		if (msgThread->ssl == nullpointer) {
 			bytes = SSL_read(msgThread->ssl, buffer, BUF_SIZE - 1);
 		} else {
-			bytes = read(msgThread->socket, buffer, BUF_SIZE - 1);
+			bytes = read(msgThread->sock, buffer, BUF_SIZE - 1);
 		}
 		if (bytes < 0) {
 			msgThread->msgHandler->handleMessage("Failed to read", ERROR);
@@ -173,6 +174,6 @@ void run(MsgThread* msgThread) {
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, int socket, SSL* ssl, MessageHandler* msgHandler) :
-	username(username), socket(socket), ssl(ssl), msgHandler(msgHandler), running(1),
+MsgThread::MsgThread(const std::string &username, int sock, SSL* ssl, MessageHandler* msgHandler) :
+	username(username), sock(sock), ssl(ssl), msgHandler(msgHandler), running(1),
 	msgThread(run, this) {}
