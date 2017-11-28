@@ -193,6 +193,11 @@ int main(int argc, char * argv[]){
 		getline(std::cin, input);
 		std::stringstream(input) >> port;
 	}
-	Server* server = new Server(port, "cert.pem", "key.pem");
+	std::string cert, key;
+	std::cout << "Cert: ";
+	std::getline(std::cin, cert);
+	std::cout << "Key: ";
+	std::getline(std::cin, key);
+	Server* server = new Server(port, cert, key);
 	server->run();
 }

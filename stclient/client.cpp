@@ -197,7 +197,12 @@ int main(int argc, char * argv[]){
 		std::getline(std::cin, tmp);
 		std::stringstream(tmp) >> port;
 	}
-	Client* client = new Client(port, host, username, "cert.pem", "key.pem");
+	std::string cert, key;
+	std::cout << "Cert: ";
+	std::getline(std::cin, cert);
+	std::cout << "Key: ";
+	std::getline(std::cin, key);
+	Client* client = new Client(port, host, username, cert, key);
 	client->run();
 	return 0;
 }
