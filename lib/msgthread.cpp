@@ -155,9 +155,9 @@ void run(MsgThread* msgThread) {
 	while (msgThread->running) {
 		int bytes = 0;
 		if (msgThread->ssl == nullpointer) {
-			bytes = SSL_read(msgThread->ssl, buffer, BUF_SIZE - 1);
-		} else {
 			bytes = read(msgThread->sock, buffer, BUF_SIZE - 1);
+		} else {
+			bytes = SSL_read(msgThread->ssl, buffer, BUF_SIZE - 1);
 		}
 		if (bytes < 0) {
 			msgThread->msgHandler->handleMessage("Failed to read", ERROR);

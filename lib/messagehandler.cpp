@@ -146,6 +146,7 @@
  */
 
 #include "messagehandler.h"
+#include <iostream>
 
 int MessageHandler::InitializeSSL(const std::string &cert, const std::string &priv, int isServer) {
 	SSL_load_error_strings();
