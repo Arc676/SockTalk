@@ -149,27 +149,27 @@
 #include "socktalkclienthandler.h"
 #include "acceptthread.h"
 
-void Server::handleMessage(const std::string &msg, int type){
+void Server::handleMessage(const std::string &msg, int type) {
 	std::cout << msg << '\n';
 }
 
-void Server::run(){
-	if (status != SUCCESS){
+void Server::run() {
+	if (status != SUCCESS) {
 		std::cout << "Failed to set up chat service: " << ExitCodes::errToString(status) << '\n';
 		return;
 	}
 	std::string input;
-	while (1){
+	while (1) {
 		std::getline(std::cin, input);
-		if (input == "/close"){
+		if (input == "/close") {
 			std::cout << "Closing server\n";
 			break;
-		}else if (input == "/users"){
+		} else if (input == "/users") {
 			checkHandlers();
 			std::cout << userList() << "\n";
-		}else if (input == "/help"){
+		} else if (input == "/help") {
 			std::cout << "Available commands:\n\t/help - show commands\n\t/users - show connected users\n\t/close - close server\n";
-		}else if (input != ""){
+		} else if (input != "") {
 			input = "Server: " + input;
 			std::cout << input << "\n";
 			broadcast(input, "server");
@@ -182,12 +182,12 @@ void Server::run(){
 	std::cout << "Server closed" << std::endl;
 }
 
-int main(int argc, char * argv[]){
+int main(int argc, char * argv[]) {
 	int port;
-	if (argc == 2){
+	if (argc == 2) {
 		std::string str(argv[1]);
 		std::stringstream(str) >> port;
-	}else{
+	} else {
 		std::cout << "Enter port number: ";
 		std::string input;
 		getline(std::cin, input);

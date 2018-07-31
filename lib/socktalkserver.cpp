@@ -1,6 +1,6 @@
 //SockTalk 2.1
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017-8  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -160,7 +160,7 @@ SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::str
 		return;
 	}
 	serverSock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (serverSock < 0){
+	if (serverSock < 0) {
 		status = CREATE_SOCKET_FAILED;
 		return;
 	}
@@ -170,7 +170,7 @@ SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::str
 	myaddr.sin_port = htons(serverPort);
 	myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	if (bind(serverSock, (sockaddr*)&myaddr, sizeof(myaddr)) < 0){
+	if (bind(serverSock, (sockaddr*)&myaddr, sizeof(myaddr)) < 0) {
 		status = BIND_SOCKET_FAILED;
 		return;
 	}
@@ -178,7 +178,7 @@ SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::str
 	linger linger_opt = {1,0};
 	setsockopt(serverSock, SOL_SOCKET, SO_LINGER, &linger_opt, sizeof(linger_opt));
 
-	if (listen(serverSock, 5) < 0){
+	if (listen(serverSock, 5) < 0) {
 		status = LISTEN_SOCKET_FAILED;
 		return;
 	}
@@ -189,7 +189,7 @@ SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::str
 void SockTalkServer::closeServer() {
 	close(serverSock);
 	acceptThread->running = 0;
-	for (int i = 0; i < handlers.size(); i++){
+	for (int i = 0; i < handlers.size(); i++) {
 		handlers[i]->stop();
 		delete handlers[i];
 	}
@@ -198,13 +198,13 @@ void SockTalkServer::closeServer() {
 	}
 }
 
-void SockTalkServer::broadcast(const std::string &msg, const std::string &source){
-	for (int i = 0; i < handlers.size(); i++){
-		if (handlers[i]->username != source){
+void SockTalkServer::broadcast(const std::string &msg, const std::string &source) {
+	for (int i = 0; i < handlers.size(); i++) {
+		if (handlers[i]->username != source) {
 			handlers[i]->send(msg);
 		}
 	}
-	if (source != "server"){
+	if (source != "server") {
 		if (source == "global") {
 			handleMessage(msg, INFO);
 		} else {
@@ -213,44 +213,44 @@ void SockTalkServer::broadcast(const std::string &msg, const std::string &source
 	}
 }
 
-void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient){
-	for (int i = 0; i < handlers.size(); i++){
-		if (handlers[i]->username == recipient){
+void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient) {
+	for (int i = 0; i < handlers.size(); i++) {
+		if (handlers[i]->username == recipient) {
 			handlers[i]->send(msg);
 			break;
 		}
 	}
 }
 
-std::string SockTalkServer::userList(){
+std::string SockTalkServer::userList() {
 	std::string str = "\tConnected users:";
-	for (int i = 0; i < handlers.size(); i++){
+	for (int i = 0; i < handlers.size(); i++) {
 		str += "\n\t\t" + handlers[i]->username;
 	}
 	return str;
 }
 
-void SockTalkServer::addHandler(SockTalkClientHandler* ch){
+void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 	handlers.push_back(ch);
 	broadcast(ch->username + " connected", "global");
 }
 
-int SockTalkServer::usernameTaken(const std::string &username){
+int SockTalkServer::usernameTaken(const std::string &username) {
 	checkHandlers();
-	for (int i = 0; i < handlers.size(); i++){
-		if (handlers[i]->username == username){
+	for (int i = 0; i < handlers.size(); i++) {
+		if (handlers[i]->username == username) {
 			return 1;
 		}
 	}
 	return 0;
 }
 
-void SockTalkServer::checkHandlers(){
-	for (int i = 0; i < handlers.size();){
-		if (!handlers[i]->isRunning()){
+void SockTalkServer::checkHandlers() {
+	for (int i = 0; i < handlers.size();) {
+		if (!handlers[i]->isRunning()) {
 			delete handlers[i];
 			handlers.erase(handlers.begin() + i);
-		}else{
+		} else {
 			i++;
 		}
 	}

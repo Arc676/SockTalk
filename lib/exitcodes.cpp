@@ -1,6 +1,6 @@
 //SockTalk 2.1
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017-8  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -148,7 +148,7 @@
 #include "exitcodes.h"
 
 std::string ExitCodes::errToString(int err) {
-	switch (err){
+	switch (err) {
 	case SUCCESS:
 		return "Success";
 	case CREATE_SOCKET_FAILED:

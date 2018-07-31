@@ -1,6 +1,6 @@
 //SockTalk 2.1
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017-8  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -149,7 +149,7 @@
 
 SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username, const std::string &cert, const std::string &key) :
 	username(username) {
-	if (username == "server" || username == "global"){
+	if (username == "server" || username == "global") {
 		status = NO_RESERVED_NAMES;
 		return;
 	}
@@ -163,7 +163,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 	sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (sock < 0){
+	if (sock < 0) {
 		status = CREATE_SOCKET_FAILED;
 		return;
 	}
@@ -173,7 +173,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 	hostaddr.sin_port = htons(port);
 	hostaddr.sin_addr.s_addr = inet_addr(host.c_str());
 
-	if (connect(sock, (sockaddr*)&hostaddr, sizeof(hostaddr)) < 0){
+	if (connect(sock, (sockaddr*)&hostaddr, sizeof(hostaddr)) < 0) {
 		status = FAILED_TO_CONNECT;
 		return;
 	}
@@ -196,7 +196,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		bytes = read(sock, registration, 1);
 	}
 	registration[bytes] = '\0';
-	if (registration[0] == 'N'){
+	if (registration[0] == 'N') {
 		status = REGISTRATION_FAILED;
 		close(sock);
 		return;

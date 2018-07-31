@@ -147,27 +147,27 @@
 
 #include "client.h"
 
-void Client::handleMessage(const std::string &msg, int){
+void Client::handleMessage(const std::string &msg, int) {
 	std::cout << msg << '\n';
 }
 
-void Client::run(){
-	if (status != SUCCESS){
+void Client::run() {
+	if (status != SUCCESS) {
 		std::cout << "Failed to set up chat service: " << ExitCodes::errToString(status) << std::endl;
 		return;
 	}
 	std::cout << "Connected\n";
 	std::string input;
-	while (1){
+	while (1) {
 		std::getline(std::cin, input);
-		if (input == "/disconnect"){
+		if (input == "/disconnect") {
 			std::cout << "Disconnecting...\n";
 			break;
-		}else if (input == ""){
+		} else if (input == "") {
 			continue;
 		}
 		input = username + ": " + input;
-		if (input.at(0) != '/'){
+		if (input.at(0) != '/') {
 			std::cout << input << std::endl;
 		}
 		send(input);
@@ -177,15 +177,15 @@ void Client::run(){
 	std::cout << "Chat terminated" << std::endl;
 }
 
-int main(int argc, char * argv[]){
+int main(int argc, char * argv[]) {
 	int port;
 	std::string host;
 	std::string username;
-	if (argc == 4){
+	if (argc == 4) {
 		username = std::string(argv[1]);
 		host = std::string(argv[2]);
 		std::stringstream(argv[3]) >> port;
-	}else{
+	} else {
 		std::cout << "Enter username: ";
 		std::getline(std::cin, username);
 

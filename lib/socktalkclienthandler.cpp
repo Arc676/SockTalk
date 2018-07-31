@@ -1,6 +1,6 @@
 //SockTalk 2.1
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
-//Copyright (C) 2017  Arc676/Alessandro Vinciguerra
+//Copyright (C) 2017-8  Arc676/Alessandro Vinciguerra
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -158,15 +158,15 @@ SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer*
 	}
 	user[bytes] = '\0';
 	username = std::string(user);
-	if (server->usernameTaken(username)){
+	if (server->usernameTaken(username)) {
 		send("N");
-	}else{
+	} else {
 		send("K");
 		msgThread = new MsgThread(username, sock, ssl, server);
 	}
 }
 
-void SockTalkClientHandler::send(const std::string &msg){
+void SockTalkClientHandler::send(const std::string &msg) {
 	if (ssl == nullpointer) {
 		write(sock, msg.c_str(), msg.length());
 	} else {
@@ -174,15 +174,15 @@ void SockTalkClientHandler::send(const std::string &msg){
 	}
 }
 
-void SockTalkClientHandler::stop(){
-	if (msgThread != nullpointer){
+void SockTalkClientHandler::stop() {
+	if (msgThread != nullpointer) {
 		msgThread->running = 0;
 	}
 	close(sock);
 }
 
-int SockTalkClientHandler::isRunning(){
-	if (msgThread == nullpointer){
+int SockTalkClientHandler::isRunning() {
+	if (msgThread == nullpointer) {
 		return 0;
 	}
 	return msgThread->running;
