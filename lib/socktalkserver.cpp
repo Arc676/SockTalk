@@ -231,6 +231,9 @@ void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 
 int SockTalkServer::usernameTaken(const std::string &username) {
 	checkHandlers();
+	if (username == "Server" || username == "Info" || username == "Error") {
+		return 1;
+	}
 	for (int i = 0; i < handlers.size(); i++) {
 		if (handlers[i]->username == username) {
 			return 1;

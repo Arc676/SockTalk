@@ -149,10 +149,6 @@
 
 SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username, const std::string &cert, const std::string &key) :
 	username(username) {
-	if (username == "Server" || username == "Info" || username == "Error") {
-		status = NO_RESERVED_NAMES;
-		return;
-	}
 	status = SUCCESS;
 	if (cert == "" || key == "") {
 		useSSL = false;
