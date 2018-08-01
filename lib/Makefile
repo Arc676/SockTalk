@@ -12,4 +12,4 @@ lib: messagehandler.o exitcodes.o acceptthread.o socktalkclient.o socktalkclient
 	$(CC) $(FLAGS) $<
 
 clean:
-	rm *.a *.o
+	rm -f *.a *.o

@@ -177,3 +177,11 @@ void MessageHandler::ShutdownSSL(SSL *ssl) {
 	SSL_shutdown(ssl);
 	SSL_free(ssl);
 }
+
+int MessageHandler::sendMessage(SSL* ssl, int sock, const std::string &msg) {
+	if (ssl) {
+		return SSL_write(ssl, msg.c_str(), msg.length());
+	} else {
+		return write(sock, msg.c_str(), msg.length());
+	}
+}

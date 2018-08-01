@@ -173,6 +173,7 @@ protected:
 	int InitializeSSL(const std::string&, const std::string&, int);
 	void DestroySSL();
 public:
+    static int sendMessage(SSL*, int, const std::string&);
 	virtual void handleMessage(const std::string&, int, const std::string&) = 0;
 	void ShutdownSSL(SSL*);
 };

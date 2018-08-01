@@ -211,11 +211,7 @@ void SockTalkClient::closeClient() {
 }
 
 int SockTalkClient::send(const std::string &message) {
-	if (useSSL) {
-		return SSL_write(ssl, message.c_str(), message.length());
-	} else {
-		return write(sock, message.c_str(), message.length());
-	}
+	return MessageHandler::sendMessage(useSSL ? ssl : nullpointer, sock, message);
 }
 
 int SockTalkClient::getStatus() {

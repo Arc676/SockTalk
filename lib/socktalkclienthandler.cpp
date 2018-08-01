@@ -167,11 +167,7 @@ SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer*
 }
 
 void SockTalkClientHandler::send(const std::string &msg) {
-	if (ssl == nullpointer) {
-		write(sock, msg.c_str(), msg.length());
-	} else {
-		SSL_write(ssl, msg.c_str(), msg.length());
-	}
+	MessageHandler::sendMessage(ssl, sock, msg);
 }
 
 void SockTalkClientHandler::stop() {
