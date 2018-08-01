@@ -163,7 +163,7 @@
 #include "msgthread.h"
 
 class SockTalkClient : public MessageHandler {
-    protected:
+protected:
 	int sock;
 	SSL* ssl;
 	std::string username;
@@ -172,7 +172,7 @@ class SockTalkClient : public MessageHandler {
 	int status = SUCCESS;
 
 	int send(const std::string&);
-    public:
+public:
 	void closeClient();
 	SockTalkClient(int, const std::string&, const std::string&, const std::string&, const std::string&);
 	int getStatus();

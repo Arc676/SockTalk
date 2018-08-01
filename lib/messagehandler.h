@@ -167,12 +167,12 @@
 #include "msgthread.h"
 
 class MessageHandler {
-    protected:
-    	bool useSSL = true;
+protected:
+	bool useSSL = true;
 	SSL_CTX* sslctx = nullpointer;
 	int InitializeSSL(const std::string&, const std::string&, int);
 	void DestroySSL();
-    public:
+public:
 	virtual void handleMessage(const std::string&, int, const std::string&) = 0;
 	void ShutdownSSL(SSL*);
 };

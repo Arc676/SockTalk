@@ -172,10 +172,10 @@ class MessageHandler;
 #endif
 
 class MsgThread {
-    protected:
+protected:
 	std::thread msgThread;
 
-    public:
+public:
 	MessageHandler* msgHandler;
 	std::string username;
 	int sock;

@@ -167,7 +167,7 @@ class SockTalkClientHandler {
 	SSL* ssl;
 	int sock;
 
-    public:
+public:
 	std::string username;
 	SockTalkClientHandler(int, SSL*, SockTalkServer*);
 	void send(const std::string&);

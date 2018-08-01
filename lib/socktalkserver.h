@@ -174,7 +174,7 @@ class AcceptThread;
 class SockTalkClientHandler;
 
 class SockTalkServer : public MessageHandler {
-    protected:
+protected:
 	int serverSock;
 	int serverPort;
 	AcceptThread* acceptThread;
@@ -183,7 +183,7 @@ class SockTalkServer : public MessageHandler {
 	int status = SUCCESS;
 
 	void checkHandlers();
-    public:
+public:
 	SockTalkServer(int, const std::string&, const std::string&);
 	virtual void closeServer();
 

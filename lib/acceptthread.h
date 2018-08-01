@@ -171,7 +171,7 @@ class AcceptThread {
 	std::thread accThread;
 	static void run(AcceptThread*);
 
-    public:
+public:
 	SockTalkServer* server;
 	int serverSock;
 	int running;
