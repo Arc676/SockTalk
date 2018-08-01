@@ -169,11 +169,7 @@ void AcceptThread::run(AcceptThread* accThread) {
 				}
 			}
 			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server);
-			if (ch->isRunning()) {
-				accThread->server->addHandler(ch);
-			} else {
-				delete ch;
-			}
+			accThread->server->addHandler(ch);
 		}
 	}
 }

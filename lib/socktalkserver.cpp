@@ -201,7 +201,7 @@ void SockTalkServer::closeServer() {
 void SockTalkServer::broadcast(const std::string &msg, const std::string &src) {
 	checkHandlers();
 	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->username != src) {
+		if (handlers[i]->getUsername() != src) {
 			handlers[i]->send(src + ": " + msg);
 		}
 	}
@@ -209,7 +209,7 @@ void SockTalkServer::broadcast(const std::string &msg, const std::string &src) {
 
 void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient) {
 	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->username == recipient) {
+		if (handlers[i]->getUsername() == recipient) {
 			handlers[i]->send(msg);
 			break;
 		}
@@ -219,32 +219,33 @@ void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient
 std::string SockTalkServer::userList() {
 	std::string str = "\tConnected users:";
 	for (int i = 0; i < handlers.size(); i++) {
-		str += "\n\t\t" + handlers[i]->username;
+		str += "\n\t\t" + handlers[i]->getUsername();
 	}
 	return str;
 }
 
 void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 	handlers.push_back(ch);
-	handleMessage(ch->username + " connected", INFO, "Info");
+	handleMessage("Incoming connection...", INFO, "Notice");
 }
 
-int SockTalkServer::usernameTaken(const std::string &username) {
+bool SockTalkServer::usernameTaken(const std::string &username) {
 	checkHandlers();
-	if (username == "Server" || username == "Info" || username == "Error") {
-		return 1;
+	if (username == "Server" || username == "Info" || username == "Error" || username == "Notice") {
+		return true;
 	}
 	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->username == username) {
-			return 1;
+		if (handlers[i]->getUsername() == username) {
+			return true;
 		}
 	}
-	return 0;
+	return false;
 }
 
 void SockTalkServer::checkHandlers() {
 	for (int i = 0; i < handlers.size();) {
 		if (!handlers[i]->isRunning()) {
+			handlers[i]->stop();
 			delete handlers[i];
 			handlers.erase(handlers.begin() + i);
 		} else {

@@ -190,7 +190,7 @@ public:
 	std::string userList();
 
 	virtual void addHandler(SockTalkClientHandler*);
-	virtual int usernameTaken(const std::string&);
+	virtual bool usernameTaken(const std::string&);
 
 	virtual void broadcast(const std::string&, const std::string&);
 	virtual void sendTo(const std::string&, const std::string&);

@@ -151,7 +151,9 @@
 
 void Server::handleMessage(const std::string &msg, int type, const std::string &src) {
 	std::cout << src << ": " << msg << '\n';
-	broadcast(msg, src);
+	if (src != "Error" && src != "Notice") {
+		broadcast(msg, src);
+	}
 }
 
 void Server::run() {

@@ -198,7 +198,7 @@ SockTalkClient::SockTalkClient(int port, const std::string &host, const std::str
 		return;
 	}
 
-	msgThread = new MsgThread("", sock, ssl, this);
+	msgThread = new MsgThread(sock, ssl, this, nullpointer);
 }
 
 void SockTalkClient::closeClient() {

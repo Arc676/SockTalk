@@ -149,21 +149,11 @@
 #include "socktalkserver.h"
 
 SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server) : sock(sock), ssl(ssl) {
-	char user[256];
-	int bytes = 0;
-	if (ssl == nullpointer) {
-		bytes = read(sock, user, 255);
-	} else {
-		bytes = SSL_read(ssl, user, 255);
-	}
-	user[bytes] = '\0';
-	username = std::string(user);
-	if (server->usernameTaken(username)) {
-		send("N");
-	} else {
-		send("K");
-		msgThread = new MsgThread(username, sock, ssl, server);
-	}
+	msgThread = new MsgThread(sock, ssl, server, server);
+}
+
+std::string SockTalkClientHandler::getUsername() {
+	return msgThread->username;
 }
 
 void SockTalkClientHandler::send(const std::string &msg) {

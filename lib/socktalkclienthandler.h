@@ -168,7 +168,7 @@ class SockTalkClientHandler {
 	int sock;
 
 public:
-	std::string username;
+	std::string getUsername();
 	SockTalkClientHandler(int, SSL*, SockTalkServer*);
 	void send(const std::string&);
 	void stop();

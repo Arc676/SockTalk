@@ -147,11 +147,36 @@
 
 #include "msgthread.h"
 #include "messagehandler.h"
-
-#define BUF_SIZE 2048
+#include "socktalkserver.h"
 
 void run(MsgThread* msgThread) {
 	char buffer[BUF_SIZE];
+	// with new connections, determine the username first and kill the
+	// thread if the connection should be terminated
+	if (msgThread->server != nullpointer) {
+		char user[256];
+		int bytes = 0;
+		if (msgThread->ssl == nullpointer) {
+			bytes = read(msgThread->sock, user, 255);
+		} else {
+			bytes = SSL_read(msgThread->ssl, user, 255);
+		}
+		user[bytes] = '\0';
+		std::string username = std::string(user);
+		// registration is successful if the username is allowed i.e. NOT taken
+		bool success = !msgThread->server->usernameTaken(username);
+		MessageHandler::sendMessage(
+			msgThread->ssl,
+			msgThread->sock,
+			success ? "Y" : "N"
+		);
+		if (success) {
+			msgThread->msgHandler->handleMessage(username + " connected", INFO, "Info");
+			msgThread->username = username;
+		} else {
+			msgThread->running = 0;
+		}
+	}
 	while (msgThread->running) {
 		int bytes = 0;
 		if (msgThread->ssl == nullpointer) {
@@ -174,6 +199,6 @@ void run(MsgThread* msgThread) {
 	}
 }
 
-MsgThread::MsgThread(const std::string &username, int sock, SSL* ssl, MessageHandler* msgHandler) :
-	username(username), sock(sock), ssl(ssl), msgHandler(msgHandler), running(1),
+MsgThread::MsgThread(int sock, SSL* ssl, MessageHandler* msgHandler, SockTalkServer *server) :
+	username(""), sock(sock), ssl(ssl), msgHandler(msgHandler), running(1), server(server),
 	msgThread(run, this) {}

@@ -156,7 +156,10 @@
 #include <string.h>
 #include <pthread.h>
 
+#define BUF_SIZE 2048
+
 class MessageHandler;
+class SockTalkServer;
 
 #if __cplusplus >= 201103L
 	#define nullpointer nullptr
@@ -181,8 +184,9 @@ public:
 	int sock;
 	SSL* ssl;
 	int running;
+	SockTalkServer* server;
 
-	MsgThread(const std::string&, int, SSL*, MessageHandler*);
+	MsgThread(int, SSL*, MessageHandler*, SockTalkServer*);
 };
 
 void run(MsgThread*);
