@@ -163,7 +163,12 @@
 
 class ExitCodes {
 public:
-	static std::string errToString(int);
+	/**
+	 * Obtain a human readable error message for a given error code
+	 * @param err Relevant error code
+	 * @return Corresponding human readable error message
+	 */
+	static std::string errToString(int err);
 };
 
 #endif

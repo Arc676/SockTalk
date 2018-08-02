@@ -170,11 +170,42 @@ class MessageHandler {
 protected:
 	bool useSSL = true;
 	SSL_CTX* sslctx = nullpointer;
-	int InitializeSSL(const std::string&, const std::string&, int);
+
+	/**
+	 * Initializes the SSL context
+	 * @param cert Filename of SSL certificate
+	 * @param priv Filename of private key
+	 * @param isServer Whether the context is being initialized for a server
+	 * @return Error code indicating success or failure
+	 */
+	int InitializeSSL(const std::string& cert, const std::string& priv, int isServer);
+
+	/**
+	 * Tear down SSL context
+	 */
 	void DestroySSL();
 public:
-    static int sendMessage(SSL*, int, const std::string&);
-	virtual void handleMessage(const std::string&, int, const std::string&) = 0;
+	/**
+	 * Sends a message via a socket
+	 * @param ssl SSL context, if in use
+	 * @param sock Socket, if SSL is not in use
+	 * @param msg Message to send
+	 * @return Number of bytes written
+	 */
+    static int sendMessage(SSL* ssl, int sock, const std::string& msg);
+
+	/**
+	 * Handle an incoming message
+	 * @param msg Incoming message
+	 * @param type Message type
+	 * @param src Source of message
+	 */
+	virtual void handleMessage(const std::string& msg, int type, const std::string& src) = 0;
+
+	/**
+	 * Shut down and deallocate SSL memory
+	 * @param ssl SSL context to free
+	 */
 	void ShutdownSSL(SSL*);
 };
 

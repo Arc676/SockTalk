@@ -210,10 +210,6 @@ void SockTalkClient::closeClient() {
 	}
 }
 
-int SockTalkClient::send(const std::string &message) {
-	return MessageHandler::sendMessage(useSSL ? ssl : nullpointer, sock, message);
-}
-
-int SockTalkClient::getStatus() {
-	return status;
+int SockTalkClient::send(const std::string &msg) {
+	return MessageHandler::sendMessage(useSSL ? ssl : nullpointer, sock, msg);
 }
