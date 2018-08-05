@@ -170,6 +170,7 @@ class MessageHandler {
 protected:
 	bool useSSL = true;
 	SSL_CTX* sslctx = nullpointer;
+	int status = SUCCESS;
 
 	/**
 	 * Initializes the SSL context

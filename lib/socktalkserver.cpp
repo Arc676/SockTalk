@@ -216,14 +216,6 @@ void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient
 	}
 }
 
-std::string SockTalkServer::userList() {
-	std::string str = "\tConnected users:";
-	for (int i = 0; i < handlers.size(); i++) {
-		str += "\n\t\t" + handlers[i]->getUsername();
-	}
-	return str;
-}
-
 void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 	handlers.push_back(ch);
 	handleMessage("Incoming connection...", INFO, "Notice");

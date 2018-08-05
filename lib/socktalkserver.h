@@ -180,8 +180,6 @@ protected:
 	AcceptThread* acceptThread;
 	std::vector<SockTalkClientHandler*> handlers;
 
-	int status = SUCCESS;
-
 	/**
 	 * Check the handlers to see if any connections are dead, dropping
 	 * any handlers for clients that have disconnected
@@ -200,12 +198,6 @@ public:
 	 * Shut down the server
 	 */
 	virtual void closeServer();
-
-	/**
-	 * Obtain a list of the connected users
-	 * @return String representation of the user list
-	 */
-	std::string userList();
 
 	/**
 	 * Adds a new client handler

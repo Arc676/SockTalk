@@ -153,6 +153,11 @@
 #include "socktalkserver.h"
 
 class Server : public SockTalkServer {
+	/**
+	 * Obtain a list of the connected users
+	 * @return String representation of the user list
+	 */
+	std::string userList();
 public:
 	using SockTalkServer::SockTalkServer;
 	virtual void handleMessage(const std::string&, int, const std::string&);

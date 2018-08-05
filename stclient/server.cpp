@@ -182,6 +182,14 @@ void Server::run() {
 	std::cout << "Server closed" << std::endl;
 }
 
+std::string Server::userList() {
+	std::string str = "\tConnected users:";
+	for (int i = 0; i < handlers.size(); i++) {
+		str += "\n\t\t" + handlers[i]->getUsername();
+	}
+	return str;
+}
+
 int main(int argc, char * argv[]) {
 	int port;
 	if (argc == 2) {

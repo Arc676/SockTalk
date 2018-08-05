@@ -169,8 +169,6 @@ protected:
 	std::string username;
 	MsgThread* msgThread;
 
-	int status = SUCCESS;
-
 	/**
 	 * Utility method for sending messages
 	 * @param msg Message to send
