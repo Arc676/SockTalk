@@ -201,7 +201,8 @@ int main(int argc, char * argv[]) {
 	std::getline(std::cin, cert);
 	std::cout << "Key: ";
 	std::getline(std::cin, key);
-	Client* client = new Client(port, host, username, cert, key);
+	Client* client = new Client();
+	client->initialize(port, host, username, cert, key);
 	client->run();
 	return 0;
 }

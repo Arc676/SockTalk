@@ -147,8 +147,8 @@
 
 #include "socktalkclient.h"
 
-SockTalkClient::SockTalkClient(int port, const std::string &host, const std::string &username, const std::string &cert, const std::string &key) :
-	username(username) {
+void SockTalkClient::initialize(int port, const std::string &host, const std::string &username, const std::string &cert, const std::string &key) {
+	this->username = username;
 	status = SUCCESS;
 	if (cert == "" || key == "") {
 		useSSL = false;

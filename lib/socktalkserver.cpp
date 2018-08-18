@@ -149,7 +149,8 @@
 #include "acceptthread.h"
 #include "socktalkclienthandler.h"
 
-SockTalkServer::SockTalkServer(int port, const std::string &cert, const std::string &key) : serverPort(port) {
+void SockTalkServer::initialize(int port, const std::string &cert, const std::string &key) {
+	serverPort = port;
 	if (cert == "" || key == "") {
 		useSSL = false;
 		status = SUCCESS;

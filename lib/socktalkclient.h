@@ -182,14 +182,14 @@ public:
 	void closeClient();
 
 	/**
-	 * Construct a new client
+	 * Initialize the client
 	 * @param port Port on which to connect
 	 * @param host Host to which to connect
 	 * @param username Desired username/nickname
 	 * @param cert Filename of SSL certificate, if needed
 	 * @param key FIlename of private key, if needed
 	 */
-	SockTalkClient(int port, const std::string& host, const std::string& username,
+	void initialize(int port, const std::string& host, const std::string& username,
 		const std::string& cert, const std::string& key);
 };
 

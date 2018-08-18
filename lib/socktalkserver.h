@@ -187,12 +187,12 @@ protected:
 	void checkHandlers();
 public:
 	/**
-	 * Construct a new server
+	 * Initialize the server
 	 * @param port Port on whih to host chat
 	 * @param cert Filename of certificate, if needed
 	 * @param key Filename of private key, if needed
 	 */
-	SockTalkServer(int port, const std::string& cert, const std::string& key);
+	void initialize(int port, const std::string& cert, const std::string& key);
 
 	/**
 	 * Shut down the server
