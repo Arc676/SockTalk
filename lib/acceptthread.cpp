@@ -1,4 +1,3 @@
-//SockTalk 2.1
 //Written by Alessandro Vinciguerra <alesvinciguerra@gmail.com>
 //Copyright (C) 2017-8  Arc676/Alessandro Vinciguerra
 
