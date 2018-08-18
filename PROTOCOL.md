@@ -17,12 +17,16 @@ When a client connects to the server, it has to register its username so it can 
 
 Once a successful socket connection is established, the registration process begins. The client sends the desired username to the server. The server checks if the username is allowed:
 
-- The username cannot be one of the three reserved usernames (Server, Error, Info)
+- The username cannot be one of the five reserved usernames (Server, Error, Info, Notice, TERM)
 - The username cannot be in use by another connected client
 
-If the username can be used, the server replies with `"K"`. Otherwise, it replies with `"N"`. If registration fails, the server drops the connection immediately. Custom clients should terminate or give up connecting at this point. A new connection must be made to re-register.
+If the username can be used, the server replies with `"K"`. Otherwise, it replies with `"N"`. If registration fails, the server drops the connection immediately. Clients should terminate or give up connecting at this point. A new connection must be made to re-register.
 
 ## Communication
+
+### Format
+
+Messages have a source and body and are presented in this format: `SOURCE: BODY`. The source of a message is determined by the server to prevent impersonation of other users.
 
 ### Server side
 

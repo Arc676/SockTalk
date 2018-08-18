@@ -168,6 +168,8 @@ std::string ExitCodes::errToString(int err) {
 		return "Failed to accept socket via SSL";
 	case SSL_CONNECT_FAILED:
 		return "Failed to connect socket via SSL";
+	case FORCIBLY_DISCONNECTED:
+		return "Forcibly disconnected by server";
 	default:
 		return "Unknown error";
 	}

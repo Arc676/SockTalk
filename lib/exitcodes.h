@@ -159,6 +159,7 @@
 #define FAILED_TO_GET_PRIVATE_KEY 7
 #define SSL_ACCEPT_FAILED 8
 #define SSL_CONNECT_FAILED 9
+#define FORCIBLY_DISCONNECTED 10
 
 class ExitCodes {
 public:

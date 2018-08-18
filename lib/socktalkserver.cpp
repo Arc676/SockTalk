@@ -189,6 +189,7 @@ void SockTalkServer::initialize(int port, const std::string &cert, const std::st
 void SockTalkServer::closeServer() {
 	close(serverSock);
 	acceptThread->running = 0;
+	broadcast("Server closing", "TERM");
 	for (int i = 0; i < handlers.size(); i++) {
 		handlers[i]->stop();
 		delete handlers[i];
@@ -221,17 +222,21 @@ void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 	handleMessage("Incoming connection...", INFO, "Notice");
 }
 
-bool SockTalkServer::usernameTaken(const std::string &username) {
+bool SockTalkServer::isReservedName(const std::string &username) {
+	return username == "Server" || username == "Info" || username == "Error" || username == "Notice" || username == "TERM";
+}
+
+bool SockTalkServer::registerName(const std::string &username) {
 	checkHandlers();
-	if (username == "Server" || username == "Info" || username == "Error" || username == "Notice") {
-		return true;
+	if (SockTalkServer::isReservedName(username)) {
+		return false;
 	}
 	for (int i = 0; i < handlers.size(); i++) {
 		if (handlers[i]->getUsername() == username) {
-			return true;
+			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 void SockTalkServer::checkHandlers() {

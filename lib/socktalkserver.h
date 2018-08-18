@@ -205,11 +205,18 @@ public:
 	virtual void addHandler(SockTalkClientHandler* ch);
 
 	/**
-	 * Determine whether a username is taken
+	 * Determines if a username is a reserved name
 	 * @param username Username to check
-	 * @return If the username is taken or is a reserved username
+	 * @return Whether the username matches a reserved name
 	 */
-	virtual bool usernameTaken(const std::string& username);
+	static bool isReservedName(const std::string& username);
+
+	/**
+	 * Attempt to register a new user
+	 * @param username Username for new user
+	 * @return Whether the registration succeeded
+	 */
+	virtual bool registerName(const std::string& username);
 
 	/**
 	 * Broadcast a message to all connected clients except the original sender

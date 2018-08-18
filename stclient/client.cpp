@@ -148,6 +148,9 @@
 
 void Client::handleMessage(const std::string &msg, int type, const std::string &src) {
 	std::cout << msg << '\n';
+	if (!msg.compare(0, 6, "TERM: ")) {
+		status = FORCIBLY_DISCONNECTED;
+	}
 }
 
 void Client::run() {
@@ -157,7 +160,7 @@ void Client::run() {
 	}
 	std::cout << "Connected\n";
 	std::string input;
-	while (1) {
+	while (status == SUCCESS) {
 		std::getline(std::cin, input);
 		if (input == "/disconnect") {
 			std::cout << "Disconnecting...\n";

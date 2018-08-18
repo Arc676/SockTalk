@@ -162,8 +162,7 @@ void run(MsgThread* msgThread) {
 		}
 		user[bytes] = '\0';
 		std::string username = std::string(user);
-		// registration is successful if the username is allowed i.e. NOT taken
-		bool success = !msgThread->server->usernameTaken(username);
+		bool success = msgThread->server->registerName(username);
 		MessageHandler::sendMessage(
 			msgThread->ssl,
 			msgThread->sock,
