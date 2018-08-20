@@ -171,6 +171,18 @@ void Server::run() {
 			std::cout << userList() << "\n";
 		} else if (input == "/help") {
 			std::cout << "Available commands:\n\t/help - show commands\n\t/users - show connected users\n\t/close - close server\n";
+		} else if (input == "/kick" || input == "/ban") {
+			bool ban = true;
+			if (input == "/kick") {
+				ban = false;
+			}
+			std::cout << "User: ";
+			std::getline(std::cin, input);
+			if (ban) {
+				banUser(input);
+			} else {
+				kickUser(input);
+			}
 		} else if (input != "") {
 			std::cout << "Server: " << input << "\n";
 			broadcast(input, "Server");

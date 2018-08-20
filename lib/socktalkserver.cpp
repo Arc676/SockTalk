@@ -208,13 +208,14 @@ void SockTalkServer::broadcast(const std::string &msg, const std::string &src) {
 	}
 }
 
-void SockTalkServer::sendTo(const std::string &msg, const std::string &recipient) {
+SockTalkClientHandler* SockTalkServer::sendTo(const std::string &msg, const std::string &recipient) {
 	for (int i = 0; i < handlers.size(); i++) {
 		if (handlers[i]->getUsername() == recipient) {
 			handlers[i]->send(msg);
-			break;
+			return handlers[i];
 		}
 	}
+	return nullpointer;
 }
 
 void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
@@ -226,11 +227,20 @@ bool SockTalkServer::isReservedName(const std::string &username) {
 	return username == "Server" || username == "Info" || username == "Error" || username == "Notice" || username == "TERM";
 }
 
-bool SockTalkServer::registerName(const std::string &username) {
+bool SockTalkServer::registerName(const std::string &username, const std::string &IP) {
+	// erase dropped connections to avoid conflict with previously connected users
 	checkHandlers();
+	// reserved names fail to register
 	if (SockTalkServer::isReservedName(username)) {
 		return false;
 	}
+	// check the banlist for the IP address
+	for (auto const &banned : banlist) {
+		if (banned.second == IP) {
+			return false;
+		}
+	}
+	// check currently connected users
 	for (int i = 0; i < handlers.size(); i++) {
 		if (handlers[i]->getUsername() == username) {
 			return false;
@@ -249,4 +259,15 @@ void SockTalkServer::checkHandlers() {
 			i++;
 		}
 	}
+}
+
+SockTalkClientHandler* SockTalkServer::kickUser(const std::string &username, const std::string &reason) {
+	SockTalkClientHandler* ch = sendTo("TERM: " + reason, username);
+	ch->stop();
+	return ch;
+}
+
+void SockTalkServer::banUser(const std::string &username) {
+	SockTalkClientHandler* ch = kickUser(username, "Banned by server");
+	banlist.push_back(std::pair<std::string, std::string>(username, ch->getIP()));
 }

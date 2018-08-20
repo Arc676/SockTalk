@@ -150,7 +150,9 @@
 
 void AcceptThread::run(AcceptThread* accThread) {
 	while (accThread->running) {
-		int clientSock = accept(accThread->serverSock, (sockaddr*)NULL, (socklen_t*)NULL);
+		sockaddr addr;
+		int len = sizeof(addr);
+		int clientSock = accept(accThread->serverSock, &addr, (socklen_t*)&len);
 		if (clientSock < 0) {
 			accThread->server->handleMessage("Failed to accept", ERROR, "Error");
 			accThread->running = 0;
@@ -167,7 +169,7 @@ void AcceptThread::run(AcceptThread* accThread) {
 					return;
 				}
 			}
-			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server);
+			SockTalkClientHandler* ch = new SockTalkClientHandler(clientSock, cSSL, accThread->server, addr);
 			accThread->server->addHandler(ch);
 		}
 	}

@@ -179,11 +179,27 @@ protected:
 	AcceptThread* acceptThread;
 	std::vector<SockTalkClientHandler*> handlers;
 
+	std::vector<std::pair<std::string, std::string>> banlist;
+
 	/**
 	 * Check the handlers to see if any connections are dead, dropping
 	 * any handlers for clients that have disconnected
 	 */
 	void checkHandlers();
+
+	/**
+	 * Kicks a user and drops the corresponding client handler
+	 * @param username Username of user to kick
+	 * @param reason Reason for kick
+	 * @return The client handler associated with the kicked user
+	 */
+	SockTalkClientHandler* kickUser(const std::string& username, const std::string& reason = "Kicked by server");
+
+	/**
+	 * Bans a user
+	 * @param username Username of user to ban
+	 */
+	void banUser(const std::string& username);
 public:
 	/**
 	 * Initialize the server
@@ -214,9 +230,10 @@ public:
 	/**
 	 * Attempt to register a new user
 	 * @param username Username for new user
+	 * @param IP IP address of new user
 	 * @return Whether the registration succeeded
 	 */
-	virtual bool registerName(const std::string& username);
+	virtual bool registerName(const std::string& username, const std::string& IP);
 
 	/**
 	 * Broadcast a message to all connected clients except the original sender
@@ -229,8 +246,9 @@ public:
 	 * Send a message to just one client
 	 * @param msg Message to send
 	 * @param recipient Username of client to which to send message
+	 * @return Client handler for the given username, if found
 	 */
-	virtual void sendTo(const std::string& msg, const std::string& recipient);
+	virtual SockTalkClientHandler* sendTo(const std::string& msg, const std::string& recipient);
 };
 
 #endif

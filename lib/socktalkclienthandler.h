@@ -149,6 +149,9 @@
 
 #include <unistd.h>
 #include <string>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "msgthread.h"
 
@@ -165,8 +168,11 @@ class SockTalkClientHandler {
 	MsgThread* msgThread;
 	SSL* ssl;
 	int sock;
+	sockaddr addr;
 
 public:
+	SockTalkServer* server;
+
 	/**
 	 * Obtain the username associated with this client
 	 * @return Username stored in associated message thread
@@ -174,12 +180,19 @@ public:
 	std::string getUsername();
 
 	/**
+	 * Obtain the IP address of the connected client
+	 * @return IP address of associated client socket
+	 */
+	std::string getIP();
+
+	/**
 	 * Construct a new client handler
 	 * @param sock Socket to listen on
 	 * @param ssl SSL context, if any
 	 * @param server Server object
+	 * @param addr Socket address information for client
 	 */
-	SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server);
+	SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server, sockaddr addr);
 
 	/**
 	 * Utility method for sending a message to the client

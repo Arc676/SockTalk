@@ -147,12 +147,13 @@
 #include "msgthread.h"
 #include "messagehandler.h"
 #include "socktalkserver.h"
+#include "socktalkclienthandler.h"
 
 void run(MsgThread* msgThread) {
 	char buffer[BUF_SIZE];
 	// with new connections, determine the username first and kill the
 	// thread if the connection should be terminated
-	if (msgThread->server != nullpointer) {
+	if (msgThread->ch != nullpointer) {
 		char user[256];
 		int bytes = 0;
 		if (msgThread->ssl == nullpointer) {
@@ -162,7 +163,7 @@ void run(MsgThread* msgThread) {
 		}
 		user[bytes] = '\0';
 		std::string username = std::string(user);
-		bool success = msgThread->server->registerName(username);
+		bool success = msgThread->ch->server->registerName(username, msgThread->ch->getIP());
 		MessageHandler::sendMessage(
 			msgThread->ssl,
 			msgThread->sock,
@@ -197,6 +198,6 @@ void run(MsgThread* msgThread) {
 	}
 }
 
-MsgThread::MsgThread(int sock, SSL* ssl, MessageHandler* msgHandler, SockTalkServer *server) :
-	username(""), sock(sock), ssl(ssl), msgHandler(msgHandler), running(1), server(server),
+MsgThread::MsgThread(int sock, SSL* ssl, MessageHandler* msgHandler, SockTalkClientHandler *ch) :
+	username(""), sock(sock), ssl(ssl), msgHandler(msgHandler), running(1), ch(ch),
 	msgThread(run, this) {}

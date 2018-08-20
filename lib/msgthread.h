@@ -158,6 +158,7 @@
 #define BUF_SIZE 2048
 
 class MessageHandler;
+class SockTalkClientHandler;
 class SockTalkServer;
 
 #if __cplusplus >= 201103L
@@ -183,16 +184,16 @@ public:
 	int sock;
 	SSL* ssl;
 	int running;
-	SockTalkServer* server;
+	SockTalkClientHandler* ch;
 
 	/**
 	 * Construct a new MsgThread object
 	 * @param sock Socket on which to listen for incoming messages
 	 * @param ssl SSL context, if in use
 	 * @param msgHandler Message handler to handle messages
-	 * @param server Server object, if needed for registration
+	 * @param ch Client handler, if message thread is being used server-side
 	 */
-	MsgThread(int sock, SSL* ssl, MessageHandler* msgHandler, SockTalkServer* server);
+	MsgThread(int sock, SSL* ssl, MessageHandler* msgHandler, SockTalkClientHandler* ch);
 };
 
 /**

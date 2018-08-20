@@ -147,12 +147,37 @@
 #include "socktalkclienthandler.h"
 #include "socktalkserver.h"
 
-SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server) : sock(sock), ssl(ssl) {
-	msgThread = new MsgThread(sock, ssl, server, server);
+SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server, sockaddr addr) : sock(sock), ssl(ssl), server(server), addr(addr) {
+	msgThread = new MsgThread(sock, ssl, server, this);
 }
 
 std::string SockTalkClientHandler::getUsername() {
 	return msgThread->username;
+}
+
+std::string SockTalkClientHandler::getIP() {
+	char* s;
+	switch (addr.sa_family) {
+	case AF_INET:
+	{
+		sockaddr_in6 *addr_in6 = (sockaddr_in6*)&addr;
+	        s = (char*)malloc(INET6_ADDRSTRLEN);
+		inet_ntop(AF_INET6, &(addr_in6->sin6_addr), s, INET6_ADDRSTRLEN);
+		break;
+	}
+	case AF_INET6:
+	{
+		sockaddr_in *addr_in = (sockaddr_in*)&addr;
+	        s = (char*)malloc(INET_ADDRSTRLEN);
+		inet_ntop(AF_INET, &(addr_in->sin_addr), s, INET_ADDRSTRLEN);
+		break;
+	}
+	default:
+		return "";
+	}
+	std::string ip = std::string(s);
+	free(s);
+	return ip;
 }
 
 void SockTalkClientHandler::send(const std::string &msg) {
