@@ -200,6 +200,13 @@ protected:
 	 * @param username Username of user to ban
 	 */
 	void banUser(const std::string& username);
+
+	/**
+	 * Unbans a user
+	 * @param username Username of user to unban
+	 * @param addr IP address to unban (if username not given)
+	 */
+	void unbanUser(const std::string& username, const std::string& addr);
 public:
 	/**
 	 * Initialize the server

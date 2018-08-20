@@ -169,6 +169,7 @@ class SockTalkClientHandler {
 	SSL* ssl;
 	int sock;
 	sockaddr addr;
+	std::string ip;
 
 public:
 	SockTalkServer* server;

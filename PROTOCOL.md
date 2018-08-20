@@ -34,4 +34,20 @@ The server uses a separate handler for each connected client. These run on dedic
 
 ### Client side
 
-The client only receives data from the server and thus cannot tell which user sent any given message. It is the server's responsibility to identify messages before broadcasting them to clients. The client merely has to display the messages to the user.
+The client only receives data from the server and thus cannot tell which user sent any given message. It is the server's responsibility to identify messages before broadcasting them to clients. The client merely has to display the messages to the user, as well as occasionally define behavior for certain events (such as being sent a TERM message, described in **User Management**).
+
+## Commands
+
+The SockTalk library provides the standard code base for the protocol, but all user interaction must be handled in the frontend. All protocol functions (such as kicking users) are handled internally, but the corresponding functions must be called appropriately by the frontend.
+
+### User Management
+
+#### Kicking and banning
+
+When a user is forcibly disconnected by the server, it is sent a message with `TERM` as the source. These messages signal that the client must disconnect. The message content specifies the disconnection reason.
+
+### Status Changes
+
+#### Server Closing
+
+When the server is terminated, the message `TERM: Server closing` is broadcasted to all connected clients. Clients should disconnect and/or terminate.

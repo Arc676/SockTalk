@@ -149,13 +149,6 @@
 
 SockTalkClientHandler::SockTalkClientHandler(int sock, SSL* ssl, SockTalkServer* server, sockaddr addr) : sock(sock), ssl(ssl), server(server), addr(addr) {
 	msgThread = new MsgThread(sock, ssl, server, this);
-}
-
-std::string SockTalkClientHandler::getUsername() {
-	return msgThread->username;
-}
-
-std::string SockTalkClientHandler::getIP() {
 	char* s;
 	switch (addr.sa_family) {
 	case AF_INET:
@@ -173,10 +166,17 @@ std::string SockTalkClientHandler::getIP() {
 		break;
 	}
 	default:
-		return "";
+		break;
 	}
-	std::string ip = std::string(s);
+	ip = std::string(s);
 	free(s);
+}
+
+std::string SockTalkClientHandler::getUsername() {
+	return msgThread->username;
+}
+
+std::string SockTalkClientHandler::getIP() {
 	return ip;
 }
 

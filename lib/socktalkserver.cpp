@@ -190,10 +190,11 @@ void SockTalkServer::closeServer() {
 	close(serverSock);
 	acceptThread->running = 0;
 	broadcast("Server closing", "TERM");
-	for (int i = 0; i < handlers.size(); i++) {
-		handlers[i]->stop();
-		delete handlers[i];
+	for (auto const &ch : handlers) {
+		ch->stop();
+		delete ch;
 	}
+	handlers.clear();
 	if (useSSL) {
 		DestroySSL();
 	}
@@ -201,18 +202,18 @@ void SockTalkServer::closeServer() {
 
 void SockTalkServer::broadcast(const std::string &msg, const std::string &src) {
 	checkHandlers();
-	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->getUsername() != src) {
-			handlers[i]->send(src + ": " + msg);
+	for (auto const &ch : handlers) {
+		if (ch->getUsername() != src) {
+			ch->send(src + ": " + msg);
 		}
 	}
 }
 
 SockTalkClientHandler* SockTalkServer::sendTo(const std::string &msg, const std::string &recipient) {
-	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->getUsername() == recipient) {
-			handlers[i]->send(msg);
-			return handlers[i];
+	for (auto const &ch : handlers) {
+		if (ch->getUsername() == recipient) {
+			ch->send(msg);
+			return ch;
 		}
 	}
 	return nullpointer;
@@ -241,8 +242,8 @@ bool SockTalkServer::registerName(const std::string &username, const std::string
 		}
 	}
 	// check currently connected users
-	for (int i = 0; i < handlers.size(); i++) {
-		if (handlers[i]->getUsername() == username) {
+	for (auto const &ch : handlers) {
+		if (ch->getUsername() == username) {
 			return false;
 		}
 	}
@@ -270,4 +271,15 @@ SockTalkClientHandler* SockTalkServer::kickUser(const std::string &username, con
 void SockTalkServer::banUser(const std::string &username) {
 	SockTalkClientHandler* ch = kickUser(username, "Banned by server");
 	banlist.push_back(std::pair<std::string, std::string>(username, ch->getIP()));
+}
+
+void SockTalkServer::unbanUser(const std::string &username, const std::string &addr) {
+	int idx = 0;
+	for (auto const &banned : banlist) {
+		if (banned.first == username || banned.second == addr) {
+			break;
+		}
+		idx++;
+	}
+	banlist.erase(banlist.begin() + idx);
 }
