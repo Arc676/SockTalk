@@ -147,6 +147,9 @@
 #include "client.h"
 
 void Client::handleMessage(const std::string &msg, int type, const std::string &src) {
+	if (status == FORCIBLY_DISCONNECTED) {
+		return;
+	}
 	std::cout << msg << '\n';
 	if (!msg.compare(0, 6, "TERM: ")) {
 		status = FORCIBLY_DISCONNECTED;

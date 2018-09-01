@@ -188,6 +188,7 @@ void SockTalkClientHandler::stop() {
 	if (msgThread != nullpointer) {
 		msgThread->running = 0;
 	}
+	shutdown(sock, SHUT_RDWR);
 	close(sock);
 }
 

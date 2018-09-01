@@ -156,11 +156,18 @@ void run(MsgThread* msgThread) {
 	if (msgThread->ch != nullpointer) {
 		char user[256];
 		int bytes = 0;
+		// set timeout for registration
+		struct timeval none, _5s;
+		_5s.tv_sec = 5;
+		socklen_t size = sizeof(struct timeval);
+		getsockopt(msgThread->sock, SOL_SOCKET, SO_RCVTIMEO, &none, &size);
+		setsockopt(msgThread->sock, SOL_SOCKET, SO_RCVTIMEO, &_5s, size);
 		if (msgThread->ssl == nullpointer) {
 			bytes = read(msgThread->sock, user, 255);
 		} else {
 			bytes = SSL_read(msgThread->ssl, user, 255);
 		}
+		setsockopt(msgThread->sock, SOL_SOCKET, SO_RCVTIMEO, &none, size);
 		user[bytes] = '\0';
 		std::string username = std::string(user);
 		bool success = msgThread->ch->server->registerName(username, msgThread->ch->getIP());
