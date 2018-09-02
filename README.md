@@ -7,9 +7,11 @@ The SockTalk protocol is a simple, open-source network communication protocol. C
 Compiling SockTalk requires that the OpenSSL library be installed.
 
 ## Frontend commands
-- "/close" from server side closes server socket.
-- "/disconnect" from client side disconnects from server.
-- "/help" gives a list of commands supported by the server.
+
+- `/close` - from server side closes server socket.
+- `/disconnect` - from client side disconnects from server.
+- `/help` - gives a list of commands supported by the server.
+- `/kick`, `/ban`, `/unban` - prompts for a username and kicks/bans/unbans the user with the given username
 
 ## Legal
 

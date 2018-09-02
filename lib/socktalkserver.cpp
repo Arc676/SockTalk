@@ -225,7 +225,7 @@ void SockTalkServer::addHandler(SockTalkClientHandler* ch) {
 }
 
 bool SockTalkServer::isReservedName(const std::string &username) {
-	return username == "Server" || username == "Info" || username == "Error" || username == "Notice" || username == "TERM";
+	return username == "Server" || username == "Info" || username == "Error" || username == "Notice" || username == "TERM" || username.find(" ") != std::string::npos;
 }
 
 bool SockTalkServer::registerName(const std::string &username, const std::string &IP) {

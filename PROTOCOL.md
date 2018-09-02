@@ -19,8 +19,11 @@ Once a successful socket connection is established, the registration process beg
 
 - The username cannot be one of the five reserved usernames (Server, Error, Info, Notice, TERM)
 - The username cannot be in use by another connected client
+- The username cannot contain spaces
 
 If the username can be used, the server replies with `"K"`. Otherwise, it replies with `"N"`. If registration fails, the server drops the connection immediately. Clients should terminate or give up connecting at this point. A new connection must be made to re-register.
+
+The connecting client must provide a username within 5 seconds. If the server is forced to wait longer than this duration, the connection is dropped.
 
 ## Communication
 

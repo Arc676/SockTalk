@@ -15,4 +15,4 @@ server:
 	$(CC) $(FLAGS) $(LD) server.cpp $(LIB) $(THREAD) -o server
 
 clean:
-	rm server client
+	rm -f server client
